@@ -6,7 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Đăng nhập
 
 GoogleSignin.configure({
-  webClientId: '1038930635348-91umttq1d40pt74uj7dbbsuthdq40igt.apps.googleusercontent.com', // Client ID từ Firebase console
+  webClientId:
+    '1038930635348-91umttq1d40pt74uj7dbbsuthdq40igt.apps.googleusercontent.com', // Client ID từ Firebase console
 });
 
 export const loginUser = createAsyncThunk(
@@ -66,17 +67,16 @@ export const loginggUser = createAsyncThunk(
   'auth/loginggUser',
   async (_, { rejectWithValue }) => {
     try {
-        // Nếu không có token, tiến hành đăng nhập thủ công
-        await GoogleSignin.hasPlayServices();
-        const response = await GoogleSignin.signIn();
-        await AsyncStorage.setItem('token', response.data?.idToken ?? '');
+      // Nếu không có token, tiến hành đăng nhập thủ công
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+      await AsyncStorage.setItem('token', response.data?.idToken ?? '');
 
-        if (response.data?.user) {
-          return response.data?.user; // Trả về thông tin người dùng sau khi đăng nhập
-        } else {
-          return rejectWithValue('Login failed: Unexpected response status.');
-        }
-      
+      if (response.data?.user) {
+        return response.data?.user; // Trả về thông tin người dùng sau khi đăng nhập
+      } else {
+        return rejectWithValue('Login failed: Unexpected response status.');
+      }
     } catch (error) {
       return rejectWithValue('Login failed!');
     }
@@ -91,8 +91,8 @@ export const loginggUserAuto = createAsyncThunk(
 
       if (token) {
         // Nếu có token, thực hiện đăng nhập tự động
-        const userInfo = await GoogleSignin.signInSilently(); 
-        
+        const userInfo = await GoogleSignin.signInSilently();
+
         if (userInfo && userInfo.data?.user) {
           return userInfo.data?.user;
         } else {
@@ -112,12 +112,15 @@ export const loginggUserAuto = createAsyncThunk(
 // export const logoutUser = createAsyncThunk('auth/logout', async () => {
 //   return {};
 // });
-export const logoutUser = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
-  try {
-    GoogleSignin.signOut();
+export const logoutUser = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      GoogleSignin.signOut();
       // Xóa token khỏi AsyncStorage
       await AsyncStorage.removeItem('token');
-  } catch (error) {
-    return rejectWithValue('Logout failed!');
+    } catch (error) {
+      return rejectWithValue('Logout failed!');
+    }
   }
-});
+);

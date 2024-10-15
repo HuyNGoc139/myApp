@@ -3,7 +3,6 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Image, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-
 interface Props {
   onPress?: () => void;
   title: string;
@@ -21,9 +20,7 @@ const ButtonComponent = (prop: Props) => {
           <Text style={styles.loginButtonText}>{title}</Text>
         </LinearGradient>
       ) : (
-        <View
-          style={[styles.loginButtonSingle, { backgroundColor }]}
-        >
+        <View style={[styles.loginButtonSingle, { backgroundColor }]}>
           {source && <Image style={{ marginLeft: 28 }} source={source} />}
           <Text style={styles.socialText}>{title}</Text>
         </View>

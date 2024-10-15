@@ -17,7 +17,7 @@ import { validateEmail, validatePassword } from '../Utils/validate';
 import SpaceComponent from '../Components/SpaceComponent';
 import InputComponent from '../Components/InputComponent';
 import ButtonComponent from '../Components/ButtonComponent';
-import { loginUser,loginggUser, loginggUserAuto } from '../redux/authActions';
+import { loginUser, loginggUser, loginggUserAuto } from '../redux/authActions';
 import { AppDispatch, RootState } from '../redux/store';
 import Cog from '../assets/icon/cogs.svg';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -31,29 +31,27 @@ const LoginScreen = ({ navigation }: any) => {
   const error = useSelector((state: RootState) => state.auth.error);
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: '1038930635348-91umttq1d40pt74uj7dbbsuthdq40igt.apps.googleusercontent.com', // Client ID từ Firebase console
+      webClientId:
+        '1038930635348-91umttq1d40pt74uj7dbbsuthdq40igt.apps.googleusercontent.com', // Client ID từ Firebase console
     });
     autoLogin();
   }, []);
 
-
-  async function onGoogleButtonPress() {    
+  async function onGoogleButtonPress() {
     try {
-      dispatch(loginggUser())
+      dispatch(loginggUser());
     } catch (error) {
       console.log(error);
-      
     }
-  
   }
 
   const autoLogin = async () => {
-    dispatch(loginggUserAuto())
+    dispatch(loginggUserAuto());
   };
 
-  const handleLetRegister =()=>{
-    navigation.navigate('Register')
-  }
+  const handleLetRegister = () => {
+    navigation.navigate('Register');
+  };
 
   const handleLogin = useCallback(() => {
     if (!username || !password) {
@@ -63,7 +61,7 @@ const LoginScreen = ({ navigation }: any) => {
     } else if (!validatePassword(password)) {
       Alert.alert('Password must be at least 6 characters');
     } else {
-      dispatch(loginUser({ username, password,}));
+      dispatch(loginUser({ username, password }));
     }
   }, [username, password, dispatch, error]);
 
@@ -144,7 +142,6 @@ const LoginScreen = ({ navigation }: any) => {
               source={require('../assets/Vector1.png')}
               onPress={onGoogleButtonPress}
             />
-            
           </View>
         </ImageBackground>
       </ScrollView>

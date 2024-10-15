@@ -119,19 +119,28 @@ const DrawerNavigator: React.FC = () => (
       name="Home"
       component={HomeScreen}
       options={{
-        drawerIcon: ({focused}) => {
-          const strokeColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
-          const fillColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
+        drawerIcon: ({ focused }) => {
+          const strokeColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
+          const fillColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
           return (
             <View
               style={{
                 width: 18,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                
               }}
             >
-              <Home width={22} height={22} stroke={strokeColor} strokeWidth={1} fill={fillColor}/>
+              <Home
+                width={22}
+                height={22}
+                stroke={strokeColor}
+                strokeWidth={1}
+                fill={fillColor}
+              />
             </View>
           );
         },
@@ -146,19 +155,28 @@ const DrawerNavigator: React.FC = () => (
       name="Remider"
       component={RemiderScreen}
       options={{
-        drawerIcon: ({focused}) => {
-          const strokeColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
-          const fillColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
+        drawerIcon: ({ focused }) => {
+          const strokeColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
+          const fillColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
           return (
             <View
               style={{
                 width: 18,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                
               }}
             >
-              <Bell width={26} height={26} stroke={strokeColor} strokeWidth={2} fill={fillColor}/>
+              <Bell
+                width={26}
+                height={26}
+                stroke={strokeColor}
+                strokeWidth={2}
+                fill={fillColor}
+              />
             </View>
           );
         },
@@ -173,19 +191,28 @@ const DrawerNavigator: React.FC = () => (
       name="Invite your friends"
       component={InviteScreen}
       options={{
-        drawerIcon: ({focused}) => {
-          const strokeColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
-          const fillColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
+        drawerIcon: ({ focused }) => {
+          const strokeColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
+          const fillColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
           return (
             <View
               style={{
                 width: 18,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                
               }}
             >
-              <User width={28} height={28} stroke={strokeColor} strokeWidth={1} fill={fillColor}/>
+              <User
+                width={28}
+                height={28}
+                stroke={strokeColor}
+                strokeWidth={1}
+                fill={fillColor}
+              />
             </View>
           );
         },
@@ -200,19 +227,28 @@ const DrawerNavigator: React.FC = () => (
       name="Send a testimonial"
       component={SendScreen}
       options={{
-        drawerIcon: ({focused}) => {
-          const strokeColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
-          const fillColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
+        drawerIcon: ({ focused }) => {
+          const strokeColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
+          const fillColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
           return (
             <View
               style={{
                 width: 18,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                
               }}
             >
-              <Mail width={26} height={26} stroke={strokeColor} strokeWidth={1} fill={fillColor}/>
+              <Mail
+                width={26}
+                height={26}
+                stroke={strokeColor}
+                strokeWidth={1}
+                fill={fillColor}
+              />
             </View>
           );
         },
@@ -227,19 +263,28 @@ const DrawerNavigator: React.FC = () => (
       name="Welcome to Video"
       component={VideoScreen}
       options={{
-        drawerIcon: ({focused}) => {
-          const strokeColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
-          const fillColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
+        drawerIcon: ({ focused }) => {
+          const strokeColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
+          const fillColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
           return (
             <View
               style={{
                 width: 18,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                
               }}
             >
-              <Video width={22} height={22} stroke={strokeColor} strokeWidth={1} fill={fillColor}/>
+              <Video
+                width={22}
+                height={22}
+                stroke={strokeColor}
+                strokeWidth={1}
+                fill={fillColor}
+              />
             </View>
           );
         },
@@ -254,19 +299,28 @@ const DrawerNavigator: React.FC = () => (
       name="Help & Support"
       component={HelpScreen}
       options={{
-        drawerIcon: ({focused}) => {
-          const strokeColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
-          const fillColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
+        drawerIcon: ({ focused }) => {
+          const strokeColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
+          const fillColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
           return (
             <View
               style={{
                 width: 18,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                
               }}
             >
-              <Help width={26} height={26} stroke={strokeColor} strokeWidth={1} fill={fillColor}/>
+              <Help
+                width={26}
+                height={26}
+                stroke={strokeColor}
+                strokeWidth={1}
+                fill={fillColor}
+              />
             </View>
           );
         },
@@ -281,19 +335,28 @@ const DrawerNavigator: React.FC = () => (
       name="Reward"
       component={RewardScreen}
       options={{
-        drawerIcon: ({focused}) => {
-          const strokeColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
-          const fillColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
+        drawerIcon: ({ focused }) => {
+          const strokeColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
+          const fillColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
           return (
             <View
               style={{
                 width: 18,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                
               }}
             >
-              <Trophy width={28} height={28} stroke={strokeColor} strokeWidth={1} fill={fillColor}/>
+              <Trophy
+                width={28}
+                height={28}
+                stroke={strokeColor}
+                strokeWidth={1}
+                fill={fillColor}
+              />
             </View>
           );
         },
@@ -308,19 +371,28 @@ const DrawerNavigator: React.FC = () => (
       name="Setting"
       component={SettingScreen}
       options={{
-        drawerIcon: ({focused}) => {
-          const strokeColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
-          const fillColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
+        drawerIcon: ({ focused }) => {
+          const strokeColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
+          const fillColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
           return (
             <View
               style={{
                 width: 18,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                
               }}
             >
-              <Cog width={30} height={30} stroke={strokeColor} strokeWidth={1} fill={fillColor}/>
+              <Cog
+                width={30}
+                height={30}
+                stroke={strokeColor}
+                strokeWidth={1}
+                fill={fillColor}
+              />
             </View>
           );
         },
@@ -335,19 +407,28 @@ const DrawerNavigator: React.FC = () => (
       name="Disclaimer"
       component={DisclaimerScreen}
       options={{
-        drawerIcon: ({focused}) => {
-          const strokeColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
-          const fillColor = focused ? 'rgba(247, 112, 152, 1)' : 'rgba(149, 158, 167, 1)';
+        drawerIcon: ({ focused }) => {
+          const strokeColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
+          const fillColor = focused
+            ? 'rgba(247, 112, 152, 1)'
+            : 'rgba(149, 158, 167, 1)';
           return (
             <View
               style={{
                 width: 18,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                
               }}
             >
-              <Ban width={20} height={20} stroke={strokeColor} strokeWidth={1} fill={fillColor}/>
+              <Ban
+                width={20}
+                height={20}
+                stroke={strokeColor}
+                strokeWidth={1}
+                fill={fillColor}
+              />
             </View>
           );
         },

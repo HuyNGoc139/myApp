@@ -1,9 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loginUser, loginggUser, loginggUserAuto, logoutUser, registerUser } from '../authActions';
+import {
+  loginUser,
+  loginggUser,
+  loginggUserAuto,
+  logoutUser,
+  registerUser,
+} from '../authActions';
 
 const initialState = {
   isAuthenticated: false,
-  user: null as { id: string; name: string | null; email: string; photo: string | null; familyName: string | null; givenName: string | null } | null,
+  user: null as {
+    id: string;
+    name: string | null;
+    email: string;
+    photo: string | null;
+    familyName: string | null;
+    givenName: string | null;
+  } | null,
   error: null,
   loading: false,
 };
@@ -47,14 +60,13 @@ const authSlice = createSlice({
       })
       //xu lu dang nhap bang google
 
-
       .addCase(loginggUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(loginggUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
-        state.user = action.payload||null;
+        state.user = action.payload || null;
         state.loading = false;
       })
       .addCase(loginggUser.rejected, (state, action) => {
@@ -69,7 +81,7 @@ const authSlice = createSlice({
       })
       .addCase(loginggUserAuto.fulfilled, (state, action) => {
         state.isAuthenticated = true;
-        state.user = action.payload||null;
+        state.user = action.payload || null;
         state.loading = false;
       })
       .addCase(loginggUserAuto.rejected, (state, action) => {

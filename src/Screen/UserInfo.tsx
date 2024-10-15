@@ -27,21 +27,33 @@ const UserInfo = () => {
         <HeaderComponent title="User Info" />
         <ScrollView>
           <View style={styles.viewImage}>
-            {user?.photo?<Image
-              style={styles.image}
-              source={{ uri: user.photo }}
-            /> :<Image
-              style={styles.image}
-              source={{ uri: 'https://randomuser.me/api/portraits/men/41.jpg' }}
-            />}
+            {user?.photo ? (
+              <Image style={styles.image} source={{ uri: user.photo }} />
+            ) : (
+              <Image
+                style={styles.image}
+                source={{
+                  uri: 'https://randomuser.me/api/portraits/men/41.jpg',
+                }}
+              />
+            )}
             <TouchableOpacity>
               <Text style={styles.text}>Change profile photo</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.infomation}>
-            <UserInfoInput label="First Name" value={user?.familyName?user?.familyName:"Renata"} />
-            <UserInfoInput label="Last Name" value={user?.givenName?user?.givenName:"Andryshyn"} />
-            <UserInfoInput label="Email" value={user?.email?user?.email:'huy139@gmail.com'} />
+            <UserInfoInput
+              label="First Name"
+              value={user?.familyName ? user?.familyName : 'Renata'}
+            />
+            <UserInfoInput
+              label="Last Name"
+              value={user?.givenName ? user?.givenName : 'Andryshyn'}
+            />
+            <UserInfoInput
+              label="Email"
+              value={user?.email ? user?.email : 'huy139@gmail.com'}
+            />
             <UserInfoInput
               label="Password"
               value={'123123123'}
