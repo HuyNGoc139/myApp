@@ -16,7 +16,7 @@ import rootReducer from './reducers';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage, // Sử dụng AsyncStorage cho React Native
-  whitelist: ['todos'], // Chỉ lưu todos trong Redux store
+  whitelist: ['todos', 'auth'], // Chỉ lưu todos va auth trong Redux store
 };
 
 // Tạo reducer đã được persist
@@ -25,6 +25,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Tạo store với reducer đã được persist
 const store = configureStore({
   reducer: persistedReducer,
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

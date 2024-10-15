@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   createDrawerNavigator,
   DrawerItemList,
@@ -11,14 +11,14 @@ import {
   StyleSheet,
   ImageSourcePropType,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../Screen/HomeScreen';
 import SettingScreen from '../Screen/SettingScreen';
 import UserInfo from '../Screen/UserInfo';
 import LoginScreen from '../Screen/LoginScreen';
 import RewardScreen from '../Screen/RewardScreen';
-
+import { AppDispatch, RootState } from '../redux/store';
 import InviteScreen from '../Screen/InviteScreen';
 import SendScreen from '../Screen/SendScreen';
 import VideoScreen from '../Screen/VideoScreen';
@@ -27,7 +27,6 @@ import DisclaimerScreen from '../Screen/Disclaimer';
 import StreakScreen from '../Screen/StreakScreen';
 import RegisterScreen from '../Screen/RegisterScreen';
 import TodoScreen from '../Screen/TodoItemScreen';
-import { RootState } from '../redux/store';
 import RemiderScreen from '../Screen/Remider';
 import Cog from '../assets/icon/cogs.svg';
 import Home from '../assets/icon/home.svg';
@@ -38,6 +37,9 @@ import Mail from '../assets/icon/mail.svg';
 import User from '../assets/icon/user.svg';
 import Video from '../assets/icon/video.svg';
 import Trophy from '../assets/icon/trophy.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { loginggUserAuto } from '../redux/authActions';
+import { useNavigation } from '@react-navigation/native';
 const Drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
@@ -444,7 +446,17 @@ const DrawerNavigator: React.FC = () => (
 
 const Router: React.FC = () => {
   const isLogin = useSelector((state: RootState) => state.auth.isAuthenticated);
-
+  const [token, setToken] = useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigation = useNavigation();
+  useEffect(() => {
+    const fetchToken = async () => {
+      const storedToken = await AsyncStorage.getItem('token');
+      setToken(storedToken);
+      dispatch(loginggUserAuto());
+    };
+    fetchToken();
+  }, []);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isLogin ? (

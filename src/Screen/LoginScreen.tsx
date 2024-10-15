@@ -28,13 +28,14 @@ const LoginScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.auth.user);
   const error = useSelector((state: RootState) => state.auth.error);
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
         '1038930635348-91umttq1d40pt74uj7dbbsuthdq40igt.apps.googleusercontent.com', // Client ID từ Firebase console
     });
-    autoLogin();
+    // autoLogin();
   }, []);
 
   async function onGoogleButtonPress() {
@@ -45,9 +46,9 @@ const LoginScreen = ({ navigation }: any) => {
     }
   }
 
-  const autoLogin = async () => {
-    dispatch(loginggUserAuto());
-  };
+  // const autoLogin = async () => {
+  //   dispatch(loginggUserAuto());
+  // };
 
   const handleLetRegister = () => {
     navigation.navigate('Register');
