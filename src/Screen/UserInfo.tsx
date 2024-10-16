@@ -20,6 +20,9 @@ import { useTranslation } from 'react-i18next';
 const UserInfo = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const { t } = useTranslation();
+  console.log('====================================');
+  console.log(user);
+  console.log('====================================');
   return (
     <View style={styles.container}>
       <ImageBackground

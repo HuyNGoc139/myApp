@@ -17,6 +17,20 @@
   "userInfo":"User Info",
   "changeurl":"Change profile photo",
   "firstname":"First Name",
-  "lastname":"Last Name"
+  "lastname":"Last Name",
+  "home":"Home",
+  "remider":"Remider",
+  "invite":"Invite your friend",
+  "send":"Send a testimonial",
+  "welcomVD":"Welcome to Video",
+  "help":"Help and Support",
+  "reward":"Reward",
+  "setting":"Setting",
+  "ban":"Disclaimer",
+  "mysubscription":"My Subscription",
+  "profileTag":"Profile Tag",
+  "t&c":"Terms & Conditions",
+  "policy":"Privacy Policy",
+  "deleteacc":"Delete Account"
   }
   

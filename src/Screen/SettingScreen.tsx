@@ -10,10 +10,12 @@ import HeaderComponent from '../Components/HeaderComponent';
 import TextComponent from '../Components/TextComponent';
 import SpaceComponent from '../Components/SpaceComponent';
 import DrawerSceneWrapper from '../Components/DrawerSceneWrapper';
+import { useTranslation } from 'react-i18next';
 
 const height = Dimensions.get('screen').height;
 
 const SettingScreen = ({ navigation }: any) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <ImageBackground

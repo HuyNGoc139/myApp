@@ -39,6 +39,12 @@ const RegisterScreen = ({ navigation }: any) => {
       Alert.alert('Error', 'Please accept the Terms & Conditions');
     } else {
       dispatch(registerUser({ firstName, lastName, email, password }));
+      navigation.navigate("Login")
+      setEmail('')
+      setFirstName('')
+      setLastName('')
+      setPassword('')
+      setIsChecked(false)
       if (error) {
         Alert.alert('Error', error);
       }

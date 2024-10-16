@@ -2,21 +2,23 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   loginUser,
   loginggUser,
-  loginggUserAuto,
   logoutUser,
   registerUser,
 } from '../authActions';
+import { Timestamp } from '@react-native-firebase/firestore';
 
 const initialState = {
   isAuthenticated: false,
   user: null as {
     id: string;
-    name: string | null;
+    name?: string | null;
     email: string;
-    photo: string | null;
+    photo?: string | null;
     familyName: string | null;
     givenName: string | null;
+    
   } | null,
+  // create_At:Timestamp,
   error: null,
   loading: false,
   token:null,
@@ -35,9 +37,14 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
-        state.user = action.payload;
+        state.user = {
+          id: action.payload.id,
+          email: action.payload.email || '',
+          familyName: action.payload.familyName || null,
+          givenName: action.payload.givenName || null,
+        };
         state.loading = false;
-        state.token=action.payload.token
+        // state.token=action.payload.token
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -53,7 +60,12 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
-        state.user = action.payload;
+        state.user = {
+          id: action.payload.id,
+          email: action.payload.email || '',
+          familyName: action.payload.familyName || null,
+          givenName: action.payload.givenName || null,
+        };
         state.loading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -79,21 +91,9 @@ const authSlice = createSlice({
         state.error = action.payload as null;
         state.token=null;
       })
-      //xu ly auto dang nhap
-      .addCase(loginggUserAuto.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginggUserAuto.fulfilled, (state, action) => {
-        state.isAuthenticated = true;
-        state.user = action.payload || null;
-        state.loading = false;
-      })
-      .addCase(loginggUserAuto.rejected, (state, action) => {
-        state.loading = false;
-        state.isAuthenticated = false;
-        state.error = action.payload as null;
-      })
+
+
+      
       // Xử lý đăng xuất
       .addCase(logoutUser.pending, (state) => {
         state.loading = true; // Hiển thị trạng thái loading khi đang đăng xuất

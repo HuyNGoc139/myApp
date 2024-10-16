@@ -38,8 +38,9 @@ import User from '../assets/icon/user.svg';
 import Video from '../assets/icon/video.svg';
 import Trophy from '../assets/icon/trophy.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { loginggUserAuto } from '../redux/authActions';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import RoomScreen from '../Screen/RoomScreen';
 const Drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
@@ -452,11 +453,12 @@ const Router: React.FC = () => {
   
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {token ? (
+      {isLogin ? (
         <>
           <Stack.Screen name="Drawer" component={DrawerNavigator} />
           <Stack.Screen name="UserInfo" component={UserInfo} />
           <Stack.Screen name="StreakScreen" component={StreakScreen} />
+          <Stack.Screen name="RoomScreen" component={RoomScreen} />
           {/* <Stack.Screen name="TodoScreen" component={TodoScreen} /> */}
         </>
       ) : (

@@ -5,11 +5,12 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // Đăng nhập
 
+import firestore from '@react-native-firebase/firestore';
+
 GoogleSignin.configure({
   webClientId:
     '1038930635348-91umttq1d40pt74uj7dbbsuthdq40igt.apps.googleusercontent.com', // Client ID từ Firebase console
 });
-
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (
@@ -17,23 +18,94 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post('https://httpbin.org/post', {
-        username,
-        password,
-        token,
-      });
-      if (response.status === 200) {
-        return response.data.json;
-      } else {
-        return rejectWithValue('Login failed: Unexpected response status.');
+      // Thực hiện đăng nhập với email và password
+      const userCredential = await auth().signInWithEmailAndPassword(username, password);
+
+      // Trả về thông tin người dùng sau khi đăng nhập thành công
+      const { user } = userCredential;
+      const userDoc = await firestore().collection('User').doc(user.uid).get();
+      if (!userDoc.exists) {
+        return rejectWithValue('Người dùng không tồn tại trong cơ sở dữ liệu.');
       }
-    } catch (error) {
-      return rejectWithValue('Login failed!');
+      return {
+        id: user.uid,
+  email: user.email,
+  familyName: userDoc.data()?.familyName, // Hoặc lấy thuộc tính nào khác mà bạn muốn
+  givenName:userDoc.data()?.givenName,
+  photo: userDoc.data()?.photo || null,
+      }
+        
+      
+    } catch (error: any) {
+      console.error('Firebase Login Error:', error);
+
+      // Xử lý lỗi đăng nhập
+      if (error.code === 'auth/user-not-found') {
+        return rejectWithValue('Người dùng không tồn tại.');
+      } else if (error.code === 'auth/wrong-password') {
+        return rejectWithValue('Mật khẩu không đúng.');
+      } else if (error.code === 'auth/invalid-email') {
+        return rejectWithValue('Email không hợp lệ.');
+      } else {
+        return rejectWithValue('Đăng nhập thất bại!');
+      }
     }
   }
 );
+// export const loginUser = createAsyncThunk(
+//   'auth/login',
+//   async (
+//     { username, password,token }: { username: string; password: string,token:string },
+//     { rejectWithValue }
+//   ) => {
+//     try {
+//       const response = await axios.post('https://httpbin.org/post', {
+//         username,
+//         password,
+//         token,
+//       });
+//       if (response.status === 200) {
+//         return response.data.json;
+//       } else {
+//         return rejectWithValue('Login failed: Unexpected response status.');
+//       }
+//     } catch (error) {
+//       return rejectWithValue('Login failed!');
+//     }
+//   }
+// );
 
 // Đăng ký
+// export const registerUser = createAsyncThunk(
+//   'auth/register',
+//   async (
+//     {
+//       firstName,
+//       lastName,
+//       email,
+//       password,
+//     }: { firstName: string; lastName: string; email: string; password: string },
+//     { rejectWithValue }
+//   ) => {
+//     try {
+//       const response = await axios.post('https://httpbin.org/post', {
+//         firstName,
+//         lastName,
+//         email,
+//         password,
+//       });
+//       if (response.status === 200) {
+//         return response.data;
+//       } else {
+//         return rejectWithValue(
+//           'Registration failed: Unexpected response status.'
+//         );
+//       }
+//     } catch (error) {
+//       return rejectWithValue('Registration failed!');
+//     }
+//   }
+// );
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (
@@ -46,21 +118,42 @@ export const registerUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post('https://httpbin.org/post', {
-        firstName,
-        lastName,
+      // Tạo tài khoản người dùng với email và password
+      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+
+      // Lấy thông tin người dùng sau khi đăng ký thành công
+      const { user } = userCredential;
+
+      // Lưu thông tin người dùng vào Firestore
+      await firestore().collection('User').doc(user.uid).set({
+        id: user.uid,
+        familyName:firstName,
+        givenName:lastName,
         email,
-        password,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        token:email+password
       });
-      if (response.status === 200) {
-        return response.data;
+      // Trả về thông tin người dùng
+      return {
+        id: user.uid,
+        email: user.email,
+        familyName: firstName,
+        givenName: lastName,
+      };
+    } catch (error: any) {
+      // Xử lý lỗi đăng ký và in ra chi tiết lỗi
+      console.error('Firebase Registration Error:', error);
+
+      if (error.code === 'auth/email-already-in-use') {
+        return rejectWithValue('Email này đã được sử dụng.');
+      } else if (error.code === 'auth/invalid-email') {
+        return rejectWithValue('Email không hợp lệ.');
+      } else if (error.code === 'auth/weak-password') {
+        return rejectWithValue('Mật khẩu quá yếu.');
       } else {
-        return rejectWithValue(
-          'Registration failed: Unexpected response status.'
-        );
+        // Trả về chi tiết lỗi
+        return rejectWithValue(`Đăng ký thất bại: ${error.message}`);
       }
-    } catch (error) {
-      return rejectWithValue('Registration failed!');
     }
   }
 );
@@ -82,36 +175,7 @@ export const loginggUser = createAsyncThunk(
     }
   }
 );
-export const loginggUserAuto = createAsyncThunk(
-  'auth/loginggUserAuto',
-  async (_, { rejectWithValue }) => {
-    try {
-      // Kiểm tra nếu có token trong AsyncStorage
-      const token = await AsyncStorage.getItem('token');
 
-      if (token) {
-        // Nếu có token, thực hiện đăng nhập tự động
-        const userInfo = await GoogleSignin.signInSilently();
-
-        if (userInfo && userInfo.data?.user) {
-          return userInfo.data?.user;
-        } else {
-          return rejectWithValue('Auto-login failed: User info not found.');
-        }
-      } else {
-        // Nếu không có token, trả về lỗi hoặc null
-        return rejectWithValue('No token found, cannot auto-login.');
-      }
-    } catch (error) {
-      return rejectWithValue('Auto-login failed due to an error.');
-    }
-  }
-);
-
-// Đăng xuất
-// export const logoutUser = createAsyncThunk('auth/logout', async () => {
-//   return {};
-// });
 export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {

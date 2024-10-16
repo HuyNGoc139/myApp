@@ -17,7 +17,7 @@ import { validateEmail, validatePassword } from '../Utils/validate';
 import SpaceComponent from '../Components/SpaceComponent';
 import InputComponent from '../Components/InputComponent';
 import ButtonComponent from '../Components/ButtonComponent';
-import { loginUser, loginggUser, loginggUserAuto } from '../redux/authActions';
+import { loginUser, loginggUser } from '../redux/authActions';
 import { AppDispatch, RootState } from '../redux/store';
 import Cog from '../assets/icon/cogs.svg';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -34,7 +34,6 @@ const LoginScreen = ({ navigation }: any) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.auth.user);
   const error = useSelector((state: RootState) => state.auth.error);
-
   const currentLanguage = useSelector((state: RootState) => state.language.language);
   const toggleLanguage = () => {
     const newLanguage = currentLanguage === 'en' ? 'vi' : 'en';
