@@ -16,7 +16,7 @@ import rootReducer from './reducers';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage, // Sử dụng AsyncStorage cho React Native
-  whitelist: ['todos', 'auth'], // Chỉ lưu todos va auth trong Redux store
+  whitelist: ['todos', 'auth','language'], // Chỉ lưu todos va auth trong Redux store
 };
 
 // Tạo reducer đã được persist

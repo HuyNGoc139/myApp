@@ -15,8 +15,11 @@ import UserInfoInput from '../Components/UserInfoComponent';
 import { useSelector } from 'react-redux';
 import DrawerSceneWrapper from '../Components/DrawerSceneWrapper';
 import { RootState } from '../redux/store';
+import { useTranslation } from 'react-i18next';
+
 const UserInfo = () => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -24,7 +27,7 @@ const UserInfo = () => {
         style={styles.container}
         resizeMode="cover"
       >
-        <HeaderComponent title="User Info" />
+        <HeaderComponent title={t('userInfo')} />
         <ScrollView>
           <View style={styles.viewImage}>
             {user?.photo ? (
@@ -38,16 +41,16 @@ const UserInfo = () => {
               />
             )}
             <TouchableOpacity>
-              <Text style={styles.text}>Change profile photo</Text>
+              <Text style={styles.text}>{t('userInfo')}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.infomation}>
             <UserInfoInput
-              label="First Name"
+              label={t('firstname')}
               value={user?.familyName ? user?.familyName : 'Renata'}
             />
             <UserInfoInput
-              label="Last Name"
+              label={t('lastname')}
               value={user?.givenName ? user?.givenName : 'Andryshyn'}
             />
             <UserInfoInput
@@ -55,7 +58,7 @@ const UserInfo = () => {
               value={user?.email ? user?.email : 'huy139@gmail.com'}
             />
             <UserInfoInput
-              label="Password"
+              label={t('password')}
               value={'123123123'}
               secureTextEntry
             />

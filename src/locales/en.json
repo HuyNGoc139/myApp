@@ -11,6 +11,12 @@
     "gg":"Login with Google",
     "alert_enter_email_password": "Please enter your email and password!!!",
   "alert_invalid_email": "Please enter the correct email format",
-  "alert_invalid_password": "Password must be at least 6 characters"
+  "alert_invalid_password": "Password must be at least 6 characters",
+  "changLng":"Change Language",
+  "logout":"log Out",
+  "userInfo":"User Info",
+  "changeurl":"Change profile photo",
+  "firstname":"First Name",
+  "lastname":"Last Name"
   }
   

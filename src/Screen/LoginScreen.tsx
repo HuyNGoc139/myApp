@@ -23,13 +23,24 @@ import Cog from '../assets/icon/cogs.svg';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from 'react-i18next';
+import i18next from '../locales/i18n';
+import { changeLanguage } from '../redux/reducers/languageSlice';
 
 const LoginScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.auth.user);
   const error = useSelector((state: RootState) => state.auth.error);
+
+  const currentLanguage = useSelector((state: RootState) => state.language.language);
+  const toggleLanguage = () => {
+    const newLanguage = currentLanguage === 'en' ? 'vi' : 'en';
+    dispatch(changeLanguage(newLanguage));
+  };
+
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
@@ -56,11 +67,11 @@ const LoginScreen = ({ navigation }: any) => {
 
   const handleLogin = useCallback(() => {
     if (!username || !password) {
-      Alert.alert('Please enter your email and password!!!');
+      Alert.alert(t('alert_enter_email_password'));
     } else if (!validateEmail(username)) {
-      Alert.alert('Please enter the correct email format');
+      Alert.alert(t('alert_invalid_email'));
     } else if (!validatePassword(password)) {
-      Alert.alert('Password must be at least 6 characters');
+      Alert.alert(t('alert_invalid_password'));
     } else {
       const token=username+password
       dispatch(loginUser({ username, password ,token}));
@@ -74,6 +85,10 @@ const LoginScreen = ({ navigation }: any) => {
       setPassword('');
     }
   }, [error]);
+
+  const changeLng=(lng:string)=>{
+    i18next.changeLanguage(lng)
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -103,7 +118,7 @@ const LoginScreen = ({ navigation }: any) => {
             />
             <InputComponent
               inputpassword
-              placeholder="Password"
+              placeholder={t('password')}
               value={password}
               onChangeText={setPassword}
               secureTextEntry
@@ -111,38 +126,43 @@ const LoginScreen = ({ navigation }: any) => {
             />
 
             <TouchableOpacity>
-              <Text style={styles.forgotPasswordText}>Forget password?</Text>
+              <Text style={styles.forgotPasswordText}>{t('forgetpass')}</Text>
             </TouchableOpacity>
 
             <ButtonComponent
-              title="Login"
+              title={t('Login')}
               colors={['#FF5789', '#FF9B9C']}
               onPress={handleLogin}
             />
             <View style={styles.signupContainer}>
-              <Text style={styles.signupText}>Don't have an account?</Text>
+              <Text style={styles.signupText}>{t('dontaccount')}</Text>
               <TouchableOpacity onPress={handleLetRegister}>
-                <Text style={styles.signupLink}>Sign Up</Text>
+                <Text style={styles.signupLink}>{t('signup')}</Text>
               </TouchableOpacity>
             </View>
 
             <View style={styles.orTextContainer}>
               <View style={styles.line}></View>
-              <Text style={styles.orText}>Or Log in with</Text>
+              <Text style={styles.orText}>{t('orlogin')}</Text>
               <View style={styles.line}></View>
             </View>
 
             <ButtonComponent
-              title="Log in with Facebook"
+              title={t('fb')}
               backgroundColor="#rgba(63, 96, 178, 1)"
               source={require('../assets/fb.png')}
             />
 
             <ButtonComponent
-              title="Log in with Google"
+              title={t('gg')}
               backgroundColor="#000"
               source={require('../assets/Vector1.png')}
               onPress={onGoogleButtonPress}
+            />
+            <ButtonComponent
+              title={t('changLng')}
+              backgroundColor="#888"
+              onPress={toggleLanguage}
             />
           </View>
         </ImageBackground>

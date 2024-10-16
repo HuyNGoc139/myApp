@@ -23,12 +23,15 @@ import Mail from '../assets/icon/mail.svg';
 import User from '../assets/icon/user.svg';
 import Video from '../assets/icon/video.svg';
 import Trophy from '../assets/icon/trophy.svg';
+import { useTranslation } from 'react-i18next';
+
 const HomeScreen = ({ navigation }: any) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const isLogin = useSelector((state: RootState) => state.auth.isAuthenticated);
   const dispatch = useDispatch<AppDispatch>();
   const [isOpen, setIsOpen] = useState(false);
   const drawerStatus = useDrawerStatus();
+  const { t } = useTranslation();
   const handleLogout = useCallback(() => {
     dispatch(logoutUser());
     dispatch(resetTodos());
@@ -96,9 +99,9 @@ const HomeScreen = ({ navigation }: any) => {
             </TouchableOpacity>
             <View style={{ alignItems: 'center', flex: 1 }}>
               <Text style={{ fontSize: 20, color: 'white' }}>
-                Welcome, {'User'}!
+              {t('welcome')}
               </Text>
-              <Button title="Log Out" onPress={handleLogout} />
+              <Button title={t('logout')} onPress={handleLogout} />
             </View>
           </ImageBackground>
         </View>
