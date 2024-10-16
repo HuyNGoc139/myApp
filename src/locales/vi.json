@@ -1,0 +1,16 @@
+{
+    "hello": "Xin chào",
+    "welcome": "Chào mừng đến với ứng dụng của chúng tôi!",
+    "Login": " Đăng nhập",
+    "password":"Mật khẩu",
+    "forgetpass":"Quên mật khẩu?",
+    "dontaccount":"Bạn chưa có tài khoản??",
+    "signup":"Đăng kí",
+    "orlogin":"Hoặc đăng nhập với",
+    "fb":"Đăng nhập với FaceBook",
+    "gg":"Đăng nhập với Google",
+    "alert_enter_email_password": "Vui lòng nhập email và mật khẩu!!!",
+  "alert_invalid_email": "Vui lòng nhập đúng định dạng email",
+  "alert_invalid_password": "Mật khẩu phải có ít nhất 6 ký tự"
+  }
+  

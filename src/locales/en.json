@@ -1,0 +1,16 @@
+{
+    "hello": "Hello",
+    "welcome": "Welcome to our app!",
+    "Login": " LogIn",
+    "password":"password",
+    "forgetpass":"Forget password?",
+    "dontaccount":"Don't have an account?",
+    "signup":"Sign Up",
+    "orlogin":"Or Login with",
+    "fb":"Login with FaceBook",
+    "gg":"Login with Google",
+    "alert_enter_email_password": "Please enter your email and password!!!",
+  "alert_invalid_email": "Please enter the correct email format",
+  "alert_invalid_password": "Password must be at least 6 characters"
+  }
+  

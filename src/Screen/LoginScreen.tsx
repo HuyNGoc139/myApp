@@ -62,7 +62,8 @@ const LoginScreen = ({ navigation }: any) => {
     } else if (!validatePassword(password)) {
       Alert.alert('Password must be at least 6 characters');
     } else {
-      dispatch(loginUser({ username, password }));
+      const token=username+password
+      dispatch(loginUser({ username, password ,token}));
     }
   }, [username, password, dispatch, error]);
 

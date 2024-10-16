@@ -13,16 +13,17 @@ GoogleSignin.configure({
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (
-    { username, password }: { username: string; password: string },
+    { username, password,token }: { username: string; password: string,token:string },
     { rejectWithValue }
   ) => {
     try {
       const response = await axios.post('https://httpbin.org/post', {
         username,
         password,
+        token,
       });
       if (response.status === 200) {
-        return response.data;
+        return response.data.json;
       } else {
         return rejectWithValue('Login failed: Unexpected response status.');
       }
@@ -71,9 +72,8 @@ export const loginggUser = createAsyncThunk(
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
       await AsyncStorage.setItem('token', response.data?.idToken ?? '');
-
       if (response.data?.user) {
-        return response.data?.user; // Trả về thông tin người dùng sau khi đăng nhập
+        return response.data; // Trả về thông tin người dùng sau khi đăng nhập
       } else {
         return rejectWithValue('Login failed: Unexpected response status.');
       }

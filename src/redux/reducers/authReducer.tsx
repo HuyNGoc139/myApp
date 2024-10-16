@@ -19,6 +19,7 @@ const initialState = {
   } | null,
   error: null,
   loading: false,
+  token:null,
 };
 
 const authSlice = createSlice({
@@ -36,11 +37,13 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.user = action.payload;
         state.loading = false;
+        state.token=action.payload.token
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
         state.error = action.payload as null;
+        state.token=null
       })
 
       // Xử lý đăng ký
@@ -66,13 +69,15 @@ const authSlice = createSlice({
       })
       .addCase(loginggUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
-        state.user = action.payload || null;
+        state.user = action.payload.user || null;
         state.loading = false;
+        state.token=action.payload.idToken as null;
       })
       .addCase(loginggUser.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
         state.error = action.payload as null;
+        state.token=null;
       })
       //xu ly auto dang nhap
       .addCase(loginggUserAuto.pending, (state) => {
@@ -97,7 +102,9 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.user = null;
         state.error = null;
-        state.loading = false; // Xóa trạng thái loading khi đăng xuất thành công
+        state.loading = false;
+        state.token=null;
+        // Xóa trạng thái loading khi đăng xuất thành công
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;

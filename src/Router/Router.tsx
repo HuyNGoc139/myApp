@@ -446,20 +446,13 @@ const DrawerNavigator: React.FC = () => (
 
 const Router: React.FC = () => {
   const isLogin = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const [token, setToken] = useState<string | null>(null);
+  const token = useSelector((state: RootState) => state.auth.token);
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation();
-  useEffect(() => {
-    const fetchToken = async () => {
-      const storedToken = await AsyncStorage.getItem('token');
-      setToken(storedToken);
-      dispatch(loginggUserAuto());
-    };
-    fetchToken();
-  }, []);
+  
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {isLogin ? (
+      {token ? (
         <>
           <Stack.Screen name="Drawer" component={DrawerNavigator} />
           <Stack.Screen name="UserInfo" component={UserInfo} />
