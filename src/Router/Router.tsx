@@ -41,6 +41,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import RoomScreen from '../Screen/RoomScreen';
+import RoomGroupScreen from '../Screen/RoomGroup';
 const Drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
@@ -459,6 +460,7 @@ const Router: React.FC = () => {
           <Stack.Screen name="UserInfo" component={UserInfo} />
           <Stack.Screen name="StreakScreen" component={StreakScreen} />
           <Stack.Screen name="RoomScreen" component={RoomScreen} />
+          <Stack.Screen name="RoomGroup" component={RoomGroupScreen} />
           {/* <Stack.Screen name="TodoScreen" component={TodoScreen} /> */}
         </>
       ) : (

@@ -23,37 +23,21 @@ export interface User {
   }
 interface Props {
   userName: string;
-  uid: string;
+  groupid: string;
   img?: [];
   onPress: () => void;
   currentuser: any;
   url?: string;
 }
-const ChatItem = (props: Props) => {
-  const { userName, uid, onPress, currentuser, url } = props; //uid = user select
+const GroupItem = (props: Props) => {
+  const { userName, groupid, onPress, currentuser, url } = props; //uid = user select
   const [lastMessage, setLastmessage] = useState<any>(undefined);
   const user = useSelector((state: RootState) => state.auth.user);
-  // useEffect(() => {
-  //   getUser();
-  // }, []);
-  // const getUser = () => {
-  //   firestore()
-  //     .doc(`User/${uid}`)
-  //     .onSnapshot((snap: any) => {
-  //       if (snap.exists) {
-  //         setUser({
-  //           ...snap.data(),
-  //         });
-  //       } else {
-  //         console.log('task not found');
-  //       }
-  //     });
-  // };
+
   useEffect(() => {
-    let roomId = getRoomId(user?.id ?? '', uid);
     const messagesRef = firestore()
-      .collection('Rooms')
-      .doc(roomId)
+      .collection('Group')
+      .doc(groupid)
       .collection('messages');
 
     const q = messagesRef.orderBy('createdAt', 'desc');
@@ -69,16 +53,13 @@ const ChatItem = (props: Props) => {
 
     return unsubscribe;
   }, []);
-  const getRoomId = (userId1: string, userId2: string) => {
-    const sortedIds = [userId1, userId2].sort();
-    return sortedIds.join('-');
-  };
+  
   const renderLastmessage = () => {
     if (typeof lastMessage == 'undefined') return 'Loading...';
     if (lastMessage) {
       if (user?.id == lastMessage.userId) {
         return `You: ${lastMessage.url ? 'Image' : lastMessage.text}`;
-      } else return lastMessage.url ? 'Image' : lastMessage.text;
+      } else return `${lastMessage.senderName}: ${lastMessage.url ? 'Image' : lastMessage.text}`;
     } else {
       return 'Say hi!!!';
     }
@@ -93,20 +74,20 @@ const ChatItem = (props: Props) => {
   };
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      {user?.photo ? (
-        <Image style={styles.image} source={{ uri: user.photo }} />
+      {url ? (
+        <Image style={styles.image} source={{ uri: url }} />
       ) : (
         <Image
           style={styles.image}
-          source={require('../assets/avatar.png')}
+          source={require('../assets/avatargroup.png')}
         />
       )}
       <View style={{ flex: 1, marginLeft: 10 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text style={styles.textBold}>{userName}</Text>
+          <Text numberOfLines={2} style={[styles.textBold,{width:'85%'}]}>{userName}</Text>
           <Text style={styles.text}>{renderTime()}</Text>
         </View>
-        <Text style={styles.text}>{renderLastmessage()}</Text>
+        <Text numberOfLines={1} style={styles.text}>{renderLastmessage()}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -123,7 +104,6 @@ const styles = StyleSheet.create({
   text: {
     color:'#888',
     fontSize: 14,
-    marginTop:4
   },
   textBold: {
 
@@ -137,4 +117,4 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
 });
-export default ChatItem;
+export default GroupItem;

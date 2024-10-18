@@ -16,7 +16,7 @@ const initialState = {
     photo?: string | null;
     familyName: string | null;
     givenName: string | null;
-    
+    userName?:string | null;
   } | null,
   // create_At:Timestamp,
   error: null,
@@ -42,6 +42,7 @@ const authSlice = createSlice({
           email: action.payload.email || '',
           familyName: action.payload.familyName || null,
           givenName: action.payload.givenName || null,
+          userName:action.payload.familyName +' '+ action.payload.givenName
         };
         state.loading = false;
         // state.token=action.payload.token
@@ -65,6 +66,7 @@ const authSlice = createSlice({
           email: action.payload.email || '',
           familyName: action.payload.familyName || null,
           givenName: action.payload.givenName || null,
+          userName:action.payload.familyName +' '+ action.payload.givenName
         };
         state.loading = false;
       })

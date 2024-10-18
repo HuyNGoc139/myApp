@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import MessageItem from './MessageItem';
+import { mess } from '../model/model';
 
 interface MessageListProps {
-  messages: any[]; // Bạn có thể thay đổi 'any' thành type cụ thể cho tin nhắn
+  messages: mess[]; // Bạn có thể thay đổi 'any' thành type cụ thể cho tin nhắn
   currenUser: any;
+  type?:string;
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, currenUser }) => {
+const MessageList: React.FC<MessageListProps> = ({ messages, currenUser,type }) => {
   const scrollViewRef = useRef<ScrollView>(null); // Tạo một ref cho ScrollView
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, currenUser }) => {
     <ScrollView ref={scrollViewRef}>
       {messages.length > 0 ? (
         messages.map((mess, index) => (
-          <MessageItem key={index} mess={mess} currenUser={currenUser} />
+          <MessageItem key={index} mess={mess} currenUser={currenUser} type={type}/>
         ))
       ) : (
         <View>
