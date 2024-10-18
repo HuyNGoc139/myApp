@@ -55,8 +55,6 @@ interface DrawerImageProps {
   source: any;
 }
 
-
-
 // Đăng ký sự kiện khi ứng dụng chuyển trạng thái
 AppState.addEventListener('change', (nextAppState) => {
   if (nextAppState === 'active') {

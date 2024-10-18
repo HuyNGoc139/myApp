@@ -6,10 +6,14 @@ import { mess } from '../model/model';
 interface MessageListProps {
   messages: mess[]; // Bạn có thể thay đổi 'any' thành type cụ thể cho tin nhắn
   currenUser: any;
-  type?:string;
+  type?: string;
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, currenUser,type }) => {
+const MessageList: React.FC<MessageListProps> = ({
+  messages,
+  currenUser,
+  type,
+}) => {
   const scrollViewRef = useRef<ScrollView>(null); // Tạo một ref cho ScrollView
 
   useEffect(() => {
@@ -23,7 +27,12 @@ const MessageList: React.FC<MessageListProps> = ({ messages, currenUser,type }) 
     <ScrollView ref={scrollViewRef}>
       {messages.length > 0 ? (
         messages.map((mess, index) => (
-          <MessageItem key={index} mess={mess} currenUser={currenUser} type={type}/>
+          <MessageItem
+            key={index}
+            mess={mess}
+            currenUser={currenUser}
+            type={type}
+          />
         ))
       ) : (
         <View>

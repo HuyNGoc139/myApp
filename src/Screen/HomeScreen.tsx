@@ -33,7 +33,7 @@ const HomeScreen = ({ navigation }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const drawerStatus = useDrawerStatus();
   const { t } = useTranslation();
-  const handleLogout = useCallback(async() => {
+  const handleLogout = useCallback(async () => {
     await updateUserStatus('offline');
     dispatch(logoutUser());
     dispatch(resetTodos());
@@ -101,7 +101,7 @@ const HomeScreen = ({ navigation }: any) => {
             </TouchableOpacity>
             <View style={{ alignItems: 'center', flex: 1 }}>
               <Text style={{ fontSize: 20, color: 'white' }}>
-              {t('welcome')}
+                {t('welcome')}
               </Text>
               <Button title={t('logout')} onPress={handleLogout} />
             </View>

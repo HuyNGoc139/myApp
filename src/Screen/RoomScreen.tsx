@@ -29,11 +29,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 // import MessageList from './components/MessageList';
 export interface User {
-    email: string;
-    id?: string;
-    username: string;
-    photo?: string;
-  }
+  email: string;
+  id?: string;
+  username: string;
+  photo?: string;
+}
 const RoomScreen = ({ navigation, route }: any) => {
   const userSelect = route.params;
   const [message, setMessage] = useState<any[]>([]);
@@ -43,7 +43,7 @@ const RoomScreen = ({ navigation, route }: any) => {
     createRoom(); // Chỉ gọi createRoom sau khi getUser hoàn tất
     getAllMessage();
   }, [user?.id]);
- 
+
   const getRoomId = (userId1: string, userId2: string) => {
     const sortedIds = [userId1, userId2].sort();
     return sortedIds.join('-');
@@ -87,7 +87,7 @@ const RoomScreen = ({ navigation, route }: any) => {
       await messagesRef.add({
         userId: user?.id,
         text: message,
-        senderName: user?.familyName+' '+user?.givenName,
+        senderName: user?.familyName + ' ' + user?.givenName,
         // createdAt: firestore.FieldValue.serverTimestamp(),
         createdAt: new Date(),
       });
@@ -114,9 +114,9 @@ const RoomScreen = ({ navigation, route }: any) => {
 
     // Lắng nghe thay đổi trên collection 'messages'
     const unsubscribe = q.onSnapshot(
-      snapshot => {
+      (snapshot) => {
         // Lấy tất cả các tin nhắn từ snapshot
-        let allMessages = snapshot.docs.map(doc => ({
+        let allMessages = snapshot.docs.map((doc) => ({
           id: doc.id,
           roomId: roomId, // Lấy id của document
           ...doc.data(), // Gộp dữ liệu của document
@@ -125,50 +125,47 @@ const RoomScreen = ({ navigation, route }: any) => {
         // Cập nhật trạng thái với danh sách tin nhắn đã sắp xếp
         setMessage(allMessages);
       },
-      error => {
+      (error) => {
         console.error('Error fetching messages:', error);
-      },
+      }
     );
 
     return unsubscribe;
   };
 
- 
-  
+  //   const confirmDeleteMessages = () => {
+  //     Alert.alert(
+  //       'Xóa tất cả tin nhắn',
+  //       'Bạn có chắc chắn muốn xóa tất cả tin nhắn không?',
+  //       [
+  //         { text: 'Cancel', style: 'cancel' },
+  //         { text: 'Delete', onPress: handleDeleteAllMessages },
+  //       ],
+  //       { cancelable: true },
+  //     );
+  //   };
+  //   // Hàm xóa tất cả tin nhắn
+  //   const handleDeleteAllMessages = async () => {
+  //     let roomId = getRoomId(userCurrent?.uid ?? '', userSelect.uid);
+  //     const messagesRef = firestore()
+  //       .collection('Rooms')
+  //       .doc(roomId)
+  //       .collection('messages');
+  //     const batch = firestore().batch();
 
-//   const confirmDeleteMessages = () => {
-//     Alert.alert(
-//       'Xóa tất cả tin nhắn',
-//       'Bạn có chắc chắn muốn xóa tất cả tin nhắn không?',
-//       [
-//         { text: 'Cancel', style: 'cancel' },
-//         { text: 'Delete', onPress: handleDeleteAllMessages },
-//       ],
-//       { cancelable: true },
-//     );
-//   };
-//   // Hàm xóa tất cả tin nhắn
-//   const handleDeleteAllMessages = async () => {
-//     let roomId = getRoomId(userCurrent?.uid ?? '', userSelect.uid);
-//     const messagesRef = firestore()
-//       .collection('Rooms')
-//       .doc(roomId)
-//       .collection('messages');
-//     const batch = firestore().batch();
-
-//     try {
-//       const snapshot = await messagesRef.get();
-//       snapshot.docs.forEach(doc => {
-//         batch.delete(doc.ref);
-//       });
-//       await batch.commit();
-//       console.log('All messages deleted successfully');
-//       Alert.alert('Đã xóa tất cả tin nhắn');
-//     } catch (error) {
-//       console.error('Error deleting all messages:', error);
-//       Alert.alert('Lỗi xóa tin nhắn');
-//     }
-//   };
+  //     try {
+  //       const snapshot = await messagesRef.get();
+  //       snapshot.docs.forEach(doc => {
+  //         batch.delete(doc.ref);
+  //       });
+  //       await batch.commit();
+  //       console.log('All messages deleted successfully');
+  //       Alert.alert('Đã xóa tất cả tin nhắn');
+  //     } catch (error) {
+  //       console.error('Error deleting all messages:', error);
+  //       Alert.alert('Lỗi xóa tin nhắn');
+  //     }
+  //   };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -248,13 +245,11 @@ const RoomScreen = ({ navigation, route }: any) => {
             borderRadius: 50,
           }}
         >
-          
-          
           <TextInput
             value={textRef}
             placeholder="Type Message..."
             style={{ flex: 1, fontSize: 16 }}
-            onChangeText={val => setTextRef(val)}
+            onChangeText={(val) => setTextRef(val)}
           />
           <TouchableOpacity
             onPress={handleSendMessage}

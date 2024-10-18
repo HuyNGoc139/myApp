@@ -7,11 +7,11 @@ interface User {
   familyName: string;
   status: string;
   photo?: string;
-  givenName:string
+  givenName: string;
 }
 interface Props {
-    onPress: () => void;
-  }
+  onPress: () => void;
+}
 const OnlineUsers = () => {
   const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
 
@@ -19,8 +19,8 @@ const OnlineUsers = () => {
     const unsubscribe = firestore()
       .collection('User')
       .where('status', '==', 'online') // Truy vấn những người dùng có trạng thái 'online'
-      .onSnapshot(snapshot => {
-        const users = snapshot.docs.map(doc => ({
+      .onSnapshot((snapshot) => {
+        const users = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as User[];
@@ -30,30 +30,59 @@ const OnlineUsers = () => {
     return () => unsubscribe(); // Hủy bỏ lắng nghe khi component bị unmount
   }, []);
   return (
-    <View style={{ paddingHorizontal:16 }}>
-        <Text style={{fontSize:18,color:'white'}}>Active User</Text>
+    <View style={{ paddingHorizontal: 16 }}>
+      <Text style={{ fontSize: 18, color: 'white' }}>Active User</Text>
       {onlineUsers.length > 0 ? (
         <FlatList
-        horizontal
+          horizontal
           data={onlineUsers}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity   onPress={()=>console.log(item)}
-            style={{ marginVertical: 10, alignItems: 'center',marginRight:8,justifyContent:'center' }}>
-              {item.photo?<Image
-                source={{ uri: item.photo}}
-                style={{ width: 48, height: 48, borderRadius: 24, marginRight: 10 }}
-              />:<Image
-              source={require('../assets/avatar.png')}
-              style={{ width: 48, height: 48, borderRadius: 24, marginRight: 10 }}
-            />
-              }
+            <TouchableOpacity
+              onPress={() => console.log(item)}
+              style={{
+                marginVertical: 10,
+                alignItems: 'center',
+                marginRight: 8,
+                justifyContent: 'center',
+              }}
+            >
+              {item.photo ? (
+                <Image
+                  source={{ uri: item.photo }}
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 24,
+                    marginRight: 10,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={require('../assets/avatar.png')}
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 24,
+                    marginRight: 10,
+                  }}
+                />
+              )}
               <Image
-              source={require('../assets/active.png')}
-              tintColor={'green'}
-              style={{ width: 12, height: 12, borderRadius: 24,position:'absolute',right:10,top:32 }}
-            />
-              <Text style={{ fontSize: 16,color:'white' }}>{item.givenName}</Text>
+                source={require('../assets/active.png')}
+                tintColor={'green'}
+                style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: 24,
+                  position: 'absolute',
+                  right: 10,
+                  top: 32,
+                }}
+              />
+              <Text style={{ fontSize: 16, color: 'white' }}>
+                {item.givenName}
+              </Text>
             </TouchableOpacity>
           )}
         />

@@ -35,7 +35,9 @@ const LoginScreen = ({ navigation }: any) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.auth.user);
   const error = useSelector((state: RootState) => state.auth.error);
-  const currentLanguage = useSelector((state: RootState) => state.language.language);
+  const currentLanguage = useSelector(
+    (state: RootState) => state.language.language
+  );
   const toggleLanguage = () => {
     const newLanguage = currentLanguage === 'en' ? 'vi' : 'en';
     dispatch(changeLanguage(newLanguage));
@@ -73,8 +75,8 @@ const LoginScreen = ({ navigation }: any) => {
     } else if (!validatePassword(password)) {
       Alert.alert(t('alert_invalid_password'));
     } else {
-      const token=username+password
-      dispatch(loginUser({ username, password ,token}));
+      const token = username + password;
+      dispatch(loginUser({ username, password, token }));
     }
   }, [username, password, dispatch, error]);
 
@@ -86,9 +88,9 @@ const LoginScreen = ({ navigation }: any) => {
     }
   }, [error]);
 
-  const changeLng=(lng:string)=>{
-    i18next.changeLanguage(lng)
-  }
+  const changeLng = (lng: string) => {
+    i18next.changeLanguage(lng);
+  };
 
   return (
     <View style={{ flex: 1 }}>

@@ -16,13 +16,20 @@ GoogleSignin.configure({
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (
-    { username, password,token }: { username: string; password: string,token:string },
+    {
+      username,
+      password,
+      token,
+    }: { username: string; password: string; token: string },
     { rejectWithValue }
   ) => {
     try {
       // Thực hiện đăng nhập với email và password
-      const userCredential = await auth().signInWithEmailAndPassword(username, password);
-      updateUserStatus('online')
+      const userCredential = await auth().signInWithEmailAndPassword(
+        username,
+        password
+      );
+      updateUserStatus('online');
       // Trả về thông tin người dùng sau khi đăng nhập thành công
       const { user } = userCredential;
       const userDoc = await firestore().collection('User').doc(user.uid).get();
@@ -31,13 +38,11 @@ export const loginUser = createAsyncThunk(
       }
       return {
         id: user.uid,
-  email: user.email,
-  familyName: userDoc.data()?.familyName, // Hoặc lấy thuộc tính nào khác mà bạn muốn
-  givenName:userDoc.data()?.givenName,
-  photo: userDoc.data()?.photo || null,
-      }
-        
-      
+        email: user.email,
+        familyName: userDoc.data()?.familyName, // Hoặc lấy thuộc tính nào khác mà bạn muốn
+        givenName: userDoc.data()?.givenName,
+        photo: userDoc.data()?.photo || null,
+      };
     } catch (error: any) {
       console.error('Firebase Login Error:', error);
 
@@ -121,21 +126,27 @@ export const registerUser = createAsyncThunk(
   ) => {
     try {
       // Tạo tài khoản người dùng với email và password
-      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+      const userCredential = await auth().createUserWithEmailAndPassword(
+        email,
+        password
+      );
 
       // Lấy thông tin người dùng sau khi đăng ký thành công
       const { user } = userCredential;
 
       // Lưu thông tin người dùng vào Firestore
-      await firestore().collection('User').doc(user.uid).set({
-        id: user.uid,
-        familyName:firstName,
-        givenName:lastName,
-        email,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-        token:email+password,
-        status: 'online',
-      });
+      await firestore()
+        .collection('User')
+        .doc(user.uid)
+        .set({
+          id: user.uid,
+          familyName: firstName,
+          givenName: lastName,
+          email,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          token: email + password,
+          status: 'online',
+        });
       // Trả về thông tin người dùng
       return {
         id: user.uid,
@@ -167,12 +178,16 @@ export const loginggUser = createAsyncThunk(
       // Nếu không có token, tiến hành đăng nhập thủ công
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
-      const  idToken  = response.data?.idToken;
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken||'');
-      const userCredential = await auth().signInWithCredential(googleCredential);
+      const idToken = response.data?.idToken;
+      const googleCredential = auth.GoogleAuthProvider.credential(
+        idToken || ''
+      );
+      const userCredential = await auth().signInWithCredential(
+        googleCredential
+      );
 
       const { user } = userCredential;
-      updateUserStatus('online')
+      updateUserStatus('online');
       // Kiểm tra xem người dùng đã tồn tại trong Firestore hay chưa
       const userDoc = await firestore().collection('User').doc(user.uid).get();
       if (!userDoc.exists) {
@@ -183,9 +198,9 @@ export const loginggUser = createAsyncThunk(
           photo: user.photoURL,
           createdAt: firestore.FieldValue.serverTimestamp(),
           status: 'online',
-          familyName:response.data?.user.familyName,
-        givenName:response.data?.user.givenName,
-        token:idToken,
+          familyName: response.data?.user.familyName,
+          givenName: response.data?.user.givenName,
+          token: idToken,
         });
       }
       await AsyncStorage.setItem('token', response.data?.idToken ?? '');
@@ -206,13 +221,13 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       auth()
-      .signOut()
-      .then(() => {
-        Alert.alert('Đăng xuất thành công!');
-      })
-      .catch(error => {
-        // Alert.alert('Đăng xuất thất bại!', error.message);
-      });
+        .signOut()
+        .then(() => {
+          Alert.alert('Đăng xuất thành công!');
+        })
+        .catch((error) => {
+          // Alert.alert('Đăng xuất thất bại!', error.message);
+        });
       GoogleSignin.signOut();
       // Xóa token khỏi AsyncStorage
       await AsyncStorage.removeItem('token');

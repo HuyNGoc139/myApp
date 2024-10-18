@@ -16,12 +16,11 @@ import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 export interface SelectModel {
-    userName: string;
-    id: string;
-    lastmesage?: any;
-    photo?: string;
-  }
-  
+  userName: string;
+  id: string;
+  lastmesage?: any;
+  photo?: string;
+}
 
 interface ModalAddGroupProps {
   visible: boolean;
@@ -34,18 +33,19 @@ const ModalAddGroup: React.FC<ModalAddGroupProps> = ({
   visible,
   onClose,
   users,
-
 }) => {
   const [selectedUsers, setSelectedUsers] = useState<SelectModel[]>([]);
   const user = useSelector((state: RootState) => state.auth.user);
   const handleToggleUser = (user: SelectModel) => {
-    const isSelected = selectedUsers.some(selected => selected.id === user.id);
+    const isSelected = selectedUsers.some(
+      (selected) => selected.id === user.id
+    );
     if (isSelected) {
-      setSelectedUsers(prev =>
-        prev.filter(selected => selected.id !== user.id),
+      setSelectedUsers((prev) =>
+        prev.filter((selected) => selected.id !== user.id)
       );
     } else {
-      setSelectedUsers(prev => [...prev, user]);
+      setSelectedUsers((prev) => [...prev, user]);
     }
   };
 
@@ -54,37 +54,38 @@ const ModalAddGroup: React.FC<ModalAddGroupProps> = ({
       console.log('Nhóm phải có ít nhất 2 thành viên.');
       return;
     }
-  
+
     const allUsers = [...selectedUsers, user];
 
     // Lấy ID và tên của tất cả người dùng, bao gồm người dùng hiện tại
-    const userIds = allUsers.map(user => user?.id).sort(); // Sắp xếp để đảm bảo ID nhóm nhất quán
-    const groupName = allUsers.map(user => user?.userName).join(', '); // Tạo tên nhóm từ tên các thành viên
-  
+    const userIds = allUsers.map((user) => user?.id).sort(); // Sắp xếp để đảm bảo ID nhóm nhất quán
+    const groupName = allUsers.map((user) => user?.userName).join(', '); // Tạo tên nhóm từ tên các thành viên
+
     // Tạo groupId bằng cách nối các id của user
     const groupId = userIds.join('-');
-    
+
     try {
-        
-        const groupRef = firestore().collection('Group').doc(groupId);
-        const groupDoc = await groupRef.get();
-    
-        if (groupDoc.exists) {
-          Alert.alert(`Nhóm với ID ${groupId} đã tồn tại.`);
-          return; // Nếu nhóm đã tồn tại thì không tạo nữa
-        }
-    
-        // Nếu nhóm chưa tồn tại, tiến hành tạo nhóm mới
-        await groupRef.set({
-          groupName, // Lưu tên nhóm là tên các thành viên
-          members: userIds, // Lưu danh sách ID của thành viên trong nhóm
-          createdAt: firestore.FieldValue.serverTimestamp(),
-        });
-    
-        console.log(`Nhóm ${groupName} đã được tạo thành công với ID: ${groupId}`);
-      } catch (error) {
-        console.error('Lỗi khi tạo nhóm:', error);
+      const groupRef = firestore().collection('Group').doc(groupId);
+      const groupDoc = await groupRef.get();
+
+      if (groupDoc.exists) {
+        Alert.alert(`Nhóm với ID ${groupId} đã tồn tại.`);
+        return; // Nếu nhóm đã tồn tại thì không tạo nữa
       }
+
+      // Nếu nhóm chưa tồn tại, tiến hành tạo nhóm mới
+      await groupRef.set({
+        groupName, // Lưu tên nhóm là tên các thành viên
+        members: userIds, // Lưu danh sách ID của thành viên trong nhóm
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      });
+
+      console.log(
+        `Nhóm ${groupName} đã được tạo thành công với ID: ${groupId}`
+      );
+    } catch (error) {
+      console.error('Lỗi khi tạo nhóm:', error);
+    }
   };
 
   const handleCreateGroup = () => {
@@ -110,12 +111,12 @@ const ModalAddGroup: React.FC<ModalAddGroupProps> = ({
           <Text style={styles.modalTitle}>Create New Group</Text>
           <FlatList
             data={users}
-            keyExtractor={item => item.id}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.userItem}>
                 <Checkbox
                   status={
-                    selectedUsers.some(selected => selected.id === item.id)
+                    selectedUsers.some((selected) => selected.id === item.id)
                       ? 'checked'
                       : 'unchecked'
                   }

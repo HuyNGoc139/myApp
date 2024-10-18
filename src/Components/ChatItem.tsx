@@ -16,11 +16,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { formatDate } from '../Utils/formateDate';
 export interface User {
-    email: string;
-    id?: string;
-    username: string;
-    photo?: string;
-  }
+  email: string;
+  id?: string;
+  username: string;
+  photo?: string;
+}
 interface Props {
   userName: string;
   uid: string;
@@ -58,13 +58,13 @@ const ChatItem = (props: Props) => {
 
     const q = messagesRef.orderBy('createdAt', 'desc');
     const unsubscribe = q.onSnapshot(
-      snapshot => {
-        let allMessages = snapshot.docs.map(doc => doc.data());
+      (snapshot) => {
+        let allMessages = snapshot.docs.map((doc) => doc.data());
         setLastmessage(allMessages[0] ? allMessages[0] : null);
       },
-      error => {
+      (error) => {
         console.error('Error fetching messages:', error);
-      },
+      }
     );
 
     return unsubscribe;
@@ -96,10 +96,7 @@ const ChatItem = (props: Props) => {
       {url ? (
         <Image style={styles.image} source={{ uri: url }} />
       ) : (
-        <Image
-          style={styles.image}
-          source={require('../assets/avatar.png')}
-        />
+        <Image style={styles.image} source={require('../assets/avatar.png')} />
       )}
       <View style={{ flex: 1, marginLeft: 10 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -121,15 +118,14 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   text: {
-    color:'#888',
+    color: '#888',
     fontSize: 14,
-    marginTop:4
+    marginTop: 4,
   },
   textBold: {
-
     color: 'white',
     fontSize: 16,
-    fontWeight:'800'
+    fontWeight: '800',
   },
   image: {
     height: 60,

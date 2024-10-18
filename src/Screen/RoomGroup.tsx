@@ -35,15 +35,9 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const [textRef, setTextRef] = useState('');
   useEffect(() => {
-
     getAllMessage();
   }, [user?.id]);
- 
 
-
-
-
- 
   const handleSendMessage = async () => {
     let message = textRef.trim();
     if (!message) return;
@@ -79,27 +73,24 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
 
     // Lắng nghe thay đổi trên collection 'messages'
     const unsubscribe = q.onSnapshot(
-      snapshot => {
+      (snapshot) => {
         // Lấy tất cả các tin nhắn từ snapshot
-        let allMessages = snapshot.docs.map(doc => ({
+        let allMessages = snapshot.docs.map((doc) => ({
           id: doc.id,
           groupId: group.id,
-          ...doc.data(), 
+          ...doc.data(),
         }));
 
         setMessage(allMessages);
-        
       },
-      error => {
+      (error) => {
         console.error('Error fetching messages:', error);
-      },
+      }
     );
 
     return unsubscribe;
   };
 
- 
-  
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <View
@@ -140,7 +131,7 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
             />
           )}
           <Text
-          numberOfLines={1}
+            numberOfLines={1}
             style={{
               lineHeight: 56,
               fontSize: 20,
@@ -166,7 +157,7 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
       </View>
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <View style={{ flex: 1 }}>
-          <MessageList messages={message} currenUser={user} type='group'/>
+          <MessageList messages={message} currenUser={user} type="group" />
         </View>
       </View>
       <View style={{ marginBottom: 16 }}>
@@ -179,13 +170,11 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
             borderRadius: 50,
           }}
         >
-          
-          
           <TextInput
             value={textRef}
             placeholder="Type Message..."
             style={{ flex: 1, fontSize: 16 }}
-            onChangeText={val => setTextRef(val)}
+            onChangeText={(val) => setTextRef(val)}
           />
           <TouchableOpacity
             onPress={handleSendMessage}

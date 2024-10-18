@@ -21,57 +21,79 @@ import { handleDateTime } from '../Utils/handleDateTime';
 // Định nghĩa type cho props của MessageItem
 interface MessageItemProps {
   mess: mess;
-  currenUser: any; 
-  type?:string;
+  currenUser: any;
+  type?: string;
 }
 
-const MessageItem: React.FC<MessageItemProps> = ({ mess, currenUser,type }) => {
-
-    if(currenUser.id==mess.userId){
-      return(
-        <View style={{
+const MessageItem: React.FC<MessageItemProps> = ({
+  mess,
+  currenUser,
+  type,
+}) => {
+  if (currenUser.id == mess.userId) {
+    return (
+      <View
+        style={{
           flexDirection: 'row',
           justifyContent: 'flex-end',
           marginBottom: 12,
           marginRight: 12,
-          alignItems:'center'
-        }}>
-          <Text style={{ fontSize: 12,marginRight:4 }}>
-            {handleDateTime.convertFirestoreTimestamp(mess.createdAt)}
-          </Text>
-          <View style={{ backgroundColor: '#a4dede', borderRadius: 25, padding: 20 }}>
-          <View style={{
+          alignItems: 'center',
+        }}
+      >
+        <Text style={{ fontSize: 12, marginRight: 4 }}>
+          {handleDateTime.convertFirestoreTimestamp(mess.createdAt)}
+        </Text>
+        <View
+          style={{ backgroundColor: '#a4dede', borderRadius: 25, padding: 20 }}
+        >
+          <View
+            style={{
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-            }}>
-              <Text
-                      style={{
-                        fontSize: 16,
-                        color: 'black',
-                      }}
-                    >
-                      {mess.text}
-                    </Text>
-                    
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                color: 'black',
+              }}
+            >
+              {mess.text}
+            </Text>
           </View>
-          </View>
-          
         </View>
-      )
-    }else{
-      return(
-       <View style={{marginLeft:12}}>
-         {type=='group'?<Text style={{marginBottom:4,fontSize:16,color:'#000',fontWeight:'700'}}>{mess.senderName}</Text>:<></>}
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          marginBottom: 12,
-          marginRight: 12,
-          alignItems:'center'
-        }}>
-          
-           { type=='group'?<Image
+      </View>
+    );
+  } else {
+    return (
+      <View style={{ marginLeft: 12 }}>
+        {type == 'group' ? (
+          <Text
+            style={{
+              marginBottom: 4,
+              fontSize: 16,
+              color: '#000',
+              fontWeight: '700',
+            }}
+          >
+            {mess.senderName}
+          </Text>
+        ) : (
+          <></>
+        )}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            marginBottom: 12,
+            marginRight: 12,
+            alignItems: 'center',
+          }}
+        >
+          {type == 'group' ? (
+            <Image
               style={{
                 height: 48,
                 width: 48,
@@ -79,36 +101,42 @@ const MessageItem: React.FC<MessageItemProps> = ({ mess, currenUser,type }) => {
                 marginRight: 6,
               }}
               source={require('../assets/avatar.png')}
-            />:<></>}
-          
-          <View style={{ backgroundColor: '#a4dede', borderRadius: 25, padding: 20 }}>
-          <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+            />
+          ) : (
+            <></>
+          )}
+
+          <View
+            style={{
+              backgroundColor: '#a4dede',
+              borderRadius: 25,
+              padding: 20,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <Text
-                      style={{
-                        fontSize: 16,
-                        color: 'black',
-                      }}
-                    >
-                      {mess.text}
-                    </Text>
+                style={{
+                  fontSize: 16,
+                  color: 'black',
+                }}
+              >
+                {mess.text}
+              </Text>
+            </View>
           </View>
-          </View>
-          <Text style={{ fontSize: 12,marginLeft:4 }}>
+          <Text style={{ fontSize: 12, marginLeft: 4 }}>
             {handleDateTime.convertFirestoreTimestamp(mess.createdAt)}
           </Text>
         </View>
-        
-       </View>
-      )
-    }
-
-
-  
-  
+      </View>
+    );
+  }
 };
 
 export default MessageItem;

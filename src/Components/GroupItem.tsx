@@ -16,11 +16,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { formatDate } from '../Utils/formateDate';
 export interface User {
-    email: string;
-    id?: string;
-    username: string;
-    photo?: string;
-  }
+  email: string;
+  id?: string;
+  username: string;
+  photo?: string;
+}
 interface Props {
   userName: string;
   groupid: string;
@@ -42,24 +42,27 @@ const GroupItem = (props: Props) => {
 
     const q = messagesRef.orderBy('createdAt', 'desc');
     const unsubscribe = q.onSnapshot(
-      snapshot => {
-        let allMessages = snapshot.docs.map(doc => doc.data());
+      (snapshot) => {
+        let allMessages = snapshot.docs.map((doc) => doc.data());
         setLastmessage(allMessages[0] ? allMessages[0] : null);
       },
-      error => {
+      (error) => {
         console.error('Error fetching messages:', error);
-      },
+      }
     );
 
     return unsubscribe;
   }, []);
-  
+
   const renderLastmessage = () => {
     if (typeof lastMessage == 'undefined') return 'Loading...';
     if (lastMessage) {
       if (user?.id == lastMessage.userId) {
         return `You: ${lastMessage.url ? 'Image' : lastMessage.text}`;
-      } else return `${lastMessage.senderName}: ${lastMessage.url ? 'Image' : lastMessage.text}`;
+      } else
+        return `${lastMessage.senderName}: ${
+          lastMessage.url ? 'Image' : lastMessage.text
+        }`;
     } else {
       return 'Say hi!!!';
     }
@@ -84,10 +87,14 @@ const GroupItem = (props: Props) => {
       )}
       <View style={{ flex: 1, marginLeft: 10 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text numberOfLines={2} style={[styles.textBold,{width:'85%'}]}>{userName}</Text>
+          <Text numberOfLines={2} style={[styles.textBold, { width: '85%' }]}>
+            {userName}
+          </Text>
           <Text style={styles.text}>{renderTime()}</Text>
         </View>
-        <Text numberOfLines={1} style={styles.text}>{renderLastmessage()}</Text>
+        <Text numberOfLines={1} style={styles.text}>
+          {renderLastmessage()}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -102,14 +109,13 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   text: {
-    color:'#888',
+    color: '#888',
     fontSize: 14,
   },
   textBold: {
-
     color: 'white',
     fontSize: 16,
-    fontWeight:'800'
+    fontWeight: '800',
   },
   image: {
     height: 60,

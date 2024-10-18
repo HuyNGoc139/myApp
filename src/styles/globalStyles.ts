@@ -1,6 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
 
-
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -8,12 +7,10 @@ export const globalStyles = StyleSheet.create({
     paddingTop: 12,
   },
   title: {
-
     fontSize: 32,
   },
   text: {
     fontSize: 14,
-  
   },
   row: {
     flexDirection: 'row',
@@ -21,7 +18,7 @@ export const globalStyles = StyleSheet.create({
     alignItems: 'center',
   },
   inputContainer: {
-    backgroundColor:'#777',
+    backgroundColor: '#777',
     borderRadius: 12,
     paddingHorizontal: Platform.OS === 'ios' ? 12 : 8,
     paddingVertical: 12,
@@ -31,8 +28,6 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 12,
   },
-
-  
 
   card: {
     borderRadius: 12,
@@ -55,14 +50,13 @@ export const globalStyles = StyleSheet.create({
   header: {
     justifyContent: 'center',
     alignItems: 'center',
-    
+
     borderBottomLeftRadius: 16,
     borderBottomRightRadius: 16,
     height: 80,
     flexDirection: 'row',
   },
   textHeader: {
-    
     fontSize: 24,
     color: 'white',
   },

@@ -16,12 +16,12 @@ const initialState = {
     photo?: string | null;
     familyName: string | null;
     givenName: string | null;
-    userName?:string | null;
+    userName?: string | null;
   } | null,
   // create_At:Timestamp,
   error: null,
   loading: false,
-  token:null,
+  token: null,
 };
 
 const authSlice = createSlice({
@@ -42,7 +42,7 @@ const authSlice = createSlice({
           email: action.payload.email || '',
           familyName: action.payload.familyName || null,
           givenName: action.payload.givenName || null,
-          userName:action.payload.familyName +' '+ action.payload.givenName
+          userName: action.payload.familyName + ' ' + action.payload.givenName,
         };
         state.loading = false;
         // state.token=action.payload.token
@@ -51,7 +51,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = false;
         state.error = action.payload as null;
-        state.token=null
+        state.token = null;
       })
 
       // Xử lý đăng ký
@@ -66,7 +66,7 @@ const authSlice = createSlice({
           email: action.payload.email || '',
           familyName: action.payload.familyName || null,
           givenName: action.payload.givenName || null,
-          userName:action.payload.familyName +' '+ action.payload.givenName
+          userName: action.payload.familyName + ' ' + action.payload.givenName,
         };
         state.loading = false;
       })
@@ -85,17 +85,15 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.user = action.payload.user || null;
         state.loading = false;
-        state.token=action.payload.idToken as null;
+        state.token = action.payload.idToken as null;
       })
       .addCase(loginggUser.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
         state.error = action.payload as null;
-        state.token=null;
+        state.token = null;
       })
 
-
-      
       // Xử lý đăng xuất
       .addCase(logoutUser.pending, (state) => {
         state.loading = true; // Hiển thị trạng thái loading khi đang đăng xuất
@@ -105,7 +103,7 @@ const authSlice = createSlice({
         state.user = null;
         state.error = null;
         state.loading = false;
-        state.token=null;
+        state.token = null;
         // Xóa trạng thái loading khi đăng xuất thành công
       })
       .addCase(logoutUser.rejected, (state, action) => {

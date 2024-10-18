@@ -45,7 +45,7 @@ export class handleDateTime {
 
     const startDate: Date = new firestore.Timestamp(
       timestamp.seconds,
-      timestamp.nanoseconds,
+      timestamp.nanoseconds
     ).toDate();
 
     const options: Intl.DateTimeFormatOptions = {
@@ -66,9 +66,9 @@ export class handleDateTime {
 
     // Định dạng ngày tháng
     const options: Intl.DateTimeFormatOptions = {
-    //   year: 'numeric',
-    //   month: '2-digit',
-    //   day: '2-digit',
+      //   year: 'numeric',
+      //   month: '2-digit',
+      //   day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
       hour12: false,
