@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import firestore from '@react-native-firebase/firestore';
 import { Alert } from 'react-native';
-import { updateUserStatus } from '../Utils/updateUserStatus';
+import { updateUserStatus } from '../utils/updateUserStatus';
 
 GoogleSignin.configure({
   webClientId:

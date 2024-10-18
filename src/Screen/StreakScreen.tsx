@@ -8,10 +8,10 @@ import {
   Image,
 } from 'react-native';
 import { Calendar, DateData } from 'react-native-calendars';
-import HeaderComponent from '../Components/HeaderComponent';
+import HeaderComponent from '../components/HeaderComponent';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
-import SpaceComponent from '../Components/SpaceComponent';
+import SpaceComponent from '../components/SpaceComponent';
 
 const months = [
   'January',

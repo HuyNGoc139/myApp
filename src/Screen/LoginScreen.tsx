@@ -13,10 +13,10 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { validateEmail, validatePassword } from '../Utils/validate';
-import SpaceComponent from '../Components/SpaceComponent';
-import InputComponent from '../Components/InputComponent';
-import ButtonComponent from '../Components/ButtonComponent';
+import { validateEmail, validatePassword } from '../utils/validate';
+import SpaceComponent from '../components/SpaceComponent';
+import InputComponent from '../components/InputComponent';
+import ButtonComponent from '../components/ButtonComponent';
 import { loginUser, loginggUser } from '../redux/authActions';
 import { AppDispatch, RootState } from '../redux/store';
 import Cog from '../assets/icon/cogs.svg';
@@ -26,7 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import i18next from '../locales/i18n';
 import { changeLanguage } from '../redux/reducers/languageSlice';
-import { updateUserStatus } from '../Utils/updateUserStatus';
+import { updateUserStatus } from '../utils/updateUserStatus';
 
 const LoginScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');

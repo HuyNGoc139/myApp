@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import HeaderComponent from '../Components/HeaderComponent';
+import HeaderComponent from '../components/HeaderComponent';
 import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import ChatItem from '../Components/ChatItem';
+import ChatItem from '../components/ChatItem';
 import { Edit } from 'iconsax-react-native';
-import ModalAddGroup from '../Components/ModalAddGroup';
-import GroupItem from '../Components/GroupItem';
-import OnlineUsers from '../Components/UserActiveComponent';
+import ModalAddGroup from '../components/ModalAddGroup';
+import GroupItem from '../components/GroupItem';
+import OnlineUsers from '../components/UserActiveComponent';
 export interface SelectModel {
   userName: string;
   id: string;
@@ -61,7 +61,7 @@ const SendScreen = ({ navigation }: any) => {
 
   //   return () => unsubscribe(); // Hủy lắng nghe khi component bị unmount
   // };
-  const listenToGroups = (currentUserId: string) => {
+  const listenToGroups = useCallback((currentUserId: string) => {
     const unsubscribe = firestore()
       .collection('Group')
       .orderBy('createdAt', 'desc')
@@ -78,14 +78,14 @@ const SendScreen = ({ navigation }: any) => {
           group.members?.includes(currentUserId)
         );
 
-        // Cập nhật state với nhóm đã lọc
+              
         setGroups(filteredGroups);
       });
 
-    return () => unsubscribe(); // Hủy lắng nghe khi component bị unmount
-  };
+    return () => unsubscribe();
+  }, []);
 
-  const handleGetAllUsers = async (currentUserId: string) => {
+  const handleGetAllUsers = useCallback(async (currentUserId: string) => {
     try {
       const snapshot = await firestore().collection('User').get();
       if (snapshot.empty) {
@@ -106,7 +106,7 @@ const SendScreen = ({ navigation }: any) => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, []);
 
   return (
     <ImageBackground
@@ -140,7 +140,7 @@ const SendScreen = ({ navigation }: any) => {
                 onPress={() => navigation.navigate('RoomGroup', { ...item })}
                 key={item.id}
                 currentuser={user}
-                userName={item.groupName} // Hiển thị tên nhóm
+                userName={item.groupName} 
                 groupid={item.id}
                 url={item.photo}
               />

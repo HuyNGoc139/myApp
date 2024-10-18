@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addTodo } from '../redux/reducers/todoReducer';
-import { getTodosFromStorage, saveTodosToStorage } from '../Utils/todoStorage';
+import { getTodosFromStorage, saveTodosToStorage } from '../utils/todoStorage';
 
 interface ModalAddTodoProps {
   visible: boolean;

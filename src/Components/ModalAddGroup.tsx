@@ -36,6 +36,7 @@ const ModalAddGroup: React.FC<ModalAddGroupProps> = ({
 }) => {
   const [selectedUsers, setSelectedUsers] = useState<SelectModel[]>([]);
   const user = useSelector((state: RootState) => state.auth.user);
+  
   const handleToggleUser = (user: SelectModel) => {
     const isSelected = selectedUsers.some(
       (selected) => selected.id === user.id

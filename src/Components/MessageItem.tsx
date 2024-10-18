@@ -15,8 +15,8 @@ import { More, Save2 } from 'iconsax-react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { mess } from '../model/model';
-import { formatDate } from '../Utils/formateDate';
-import { handleDateTime } from '../Utils/handleDateTime';
+import { formatDate } from '../utils/formateDate';
+import { handleDateTime } from '../utils/handleDateTime';
 
 // Định nghĩa type cho props của MessageItem
 interface MessageItemProps {

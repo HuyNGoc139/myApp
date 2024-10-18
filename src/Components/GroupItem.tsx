@@ -14,7 +14,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import { formatDate } from '../Utils/formateDate';
+import { formatDate } from '../utils/formateDate';
 export interface User {
   email: string;
   id?: string;
@@ -29,6 +29,7 @@ interface Props {
   currentuser: any;
   url?: string;
 }
+
 const GroupItem = (props: Props) => {
   const { userName, groupid, onPress, currentuser, url } = props; //uid = user select
   const [lastMessage, setLastmessage] = useState<any>(undefined);
@@ -67,6 +68,7 @@ const GroupItem = (props: Props) => {
       return 'Say hi!!!';
     }
   };
+
   const renderTime = () => {
     if (lastMessage) {
       let date = new Date(lastMessage?.createdAt?.seconds * 1000);
@@ -75,6 +77,7 @@ const GroupItem = (props: Props) => {
       return 'Time';
     }
   };
+  
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {url ? (

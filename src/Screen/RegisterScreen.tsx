@@ -11,10 +11,10 @@ import {
   ImageBackground,
   Alert,
 } from 'react-native';
-import { validateEmail, validatePassword } from '../Utils/validate';
-import SpaceComponent from '../Components/SpaceComponent';
-import InputComponent from '../Components/InputComponent';
-import ButtonComponent from '../Components/ButtonComponent';
+import { validateEmail, validatePassword } from '../utils/validate';
+import SpaceComponent from '../components/SpaceComponent';
+import InputComponent from '../components/InputComponent';
+import ButtonComponent from '../components/ButtonComponent';
 import CheckBox from '@react-native-community/checkbox';
 import { registerUser } from '../redux/authActions';
 import { AppDispatch, RootState } from '../redux/store';

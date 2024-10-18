@@ -8,8 +8,8 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import RewardComponent from '../Components/RewardComponent';
-import DrawerSceneWrapper from '../Components/DrawerSceneWrapper';
+import RewardComponent from '../components/RewardComponent';
+import DrawerSceneWrapper from '../components/DrawerSceneWrapper';
 import LinearGradient from 'react-native-linear-gradient';
 import { NavigationProp } from '@react-navigation/native';
 

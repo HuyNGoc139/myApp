@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, ImageBackground, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import CheckBox from '@react-native-community/checkbox';
 
-import HeaderComponent from '../Components/HeaderComponent';
-import InputComponent from '../Components/InputComponent';
-import ButtonComponent from '../Components/ButtonComponent';
+import HeaderComponent from '../components/HeaderComponent';
+import InputComponent from '../components/InputComponent';
+import ButtonComponent from '../components/ButtonComponent';
 import { toggleTodo, updateTodo } from '../redux/reducers/todoReducer';
 import { useNavigation } from '@react-navigation/native';
-import { getTodosFromStorage, saveTodosToStorage } from '../Utils/todoStorage';
+import { getTodosFromStorage, saveTodosToStorage } from '../utils/todoStorage';
 import { TextInput } from 'react-native-gesture-handler';
 // Define the Todo item type
 interface Todo {

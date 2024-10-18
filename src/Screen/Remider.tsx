@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import HeaderComponent from '../Components/HeaderComponent';
-import TodoComponent from '../Components/Todocomponent';
-import InputComponent from '../Components/InputComponent';
-import ButtonComponent from '../Components/ButtonComponent';
+import HeaderComponent from '../components/HeaderComponent';
+import TodoComponent from '../components/Todocomponent';
+import InputComponent from '../components/InputComponent';
+import ButtonComponent from '../components/ButtonComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addTodo,
@@ -21,10 +21,10 @@ import {
   selectFilteredTodos,
 } from '../redux/reducers/todoReducer';
 import CheckBox from '@react-native-community/checkbox';
-import { getTodosFromStorage, saveTodosToStorage } from '../Utils/todoStorage';
+import { getTodosFromStorage, saveTodosToStorage } from '../utils/todoStorage';
 import { AppDispatch, RootState } from '../redux/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ModalAddTodo from '../Components/modalADd';
+import ModalAddTodo from '../components/modalADd';
 
 interface Todo {
   id: number;

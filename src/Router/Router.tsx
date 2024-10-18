@@ -13,21 +13,21 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../Screen/HomeScreen';
-import SettingScreen from '../Screen/SettingScreen';
-import UserInfo from '../Screen/UserInfo';
-import LoginScreen from '../Screen/LoginScreen';
-import RewardScreen from '../Screen/RewardScreen';
+import HomeScreen from '../screen/HomeScreen';
+import SettingScreen from '../screen/SettingScreen';
+import UserInfo from '../screen/UserInfo';
+import LoginScreen from '../screen/LoginScreen';
+import RewardScreen from '../screen/RewardScreen';
 import { AppDispatch, RootState } from '../redux/store';
-import InviteScreen from '../Screen/InviteScreen';
-import SendScreen from '../Screen/SendScreen';
-import VideoScreen from '../Screen/VideoScreen';
-import HelpScreen from '../Screen/HelpandSupport';
-import DisclaimerScreen from '../Screen/Disclaimer';
-import StreakScreen from '../Screen/StreakScreen';
-import RegisterScreen from '../Screen/RegisterScreen';
-import TodoScreen from '../Screen/TodoItemScreen';
-import RemiderScreen from '../Screen/Remider';
+import InviteScreen from '../screen/InviteScreen';
+import SendScreen from '../screen/SendScreen';
+import VideoScreen from '../screen/VideoScreen';
+import HelpScreen from '../screen/HelpandSupport';
+import DisclaimerScreen from '../screen/Disclaimer';
+import StreakScreen from '../screen/StreakScreen';
+import RegisterScreen from '../screen/RegisterScreen';
+import TodoScreen from '../screen/TodoItemScreen';
+import RemiderScreen from '../screen/Remider';
 import Cog from '../assets/icon/cogs.svg';
 import Home from '../assets/icon/home.svg';
 import Ban from '../assets/icon/ban.svg';
@@ -40,12 +40,13 @@ import Trophy from '../assets/icon/trophy.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import RoomScreen from '../Screen/RoomScreen';
-import RoomGroupScreen from '../Screen/RoomGroup';
+import RoomScreen from '../screen/RoomScreen';
+import RoomGroupScreen from '../screen/RoomGroup';
 import auth from '@react-native-firebase/auth';
 import { AppState } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import { updateUserStatus } from '../Utils/updateUserStatus';
+import { updateUserStatus } from '../utils/updateUserStatus';
+
 const Drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
@@ -56,13 +57,13 @@ interface DrawerImageProps {
 }
 
 // Đăng ký sự kiện khi ứng dụng chuyển trạng thái
-AppState.addEventListener('change', (nextAppState) => {
-  if (nextAppState === 'active') {
-    updateUserStatus('online');
-  } else {
-    updateUserStatus('offline');
-  }
-});
+// AppState.addEventListener('change', (nextAppState) => {
+//   if (nextAppState === 'active') {
+//     updateUserStatus('online');
+//   } else {
+//     updateUserStatus('offline');
+//   }
+// });
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   // const userName = useSelector((state: RootState) => state.auth.user?.json?.username);
@@ -432,6 +433,19 @@ const Router: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.token);
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation();
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (nextAppState === 'active') {
+        updateUserStatus('online');
+      } else {
+        updateUserStatus('offline');
+      }
+    })
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isLogin ? (

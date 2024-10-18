@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/authActions';
-import DrawerSceneWrapper from '../Components/DrawerSceneWrapper';
+import DrawerSceneWrapper from '../components/DrawerSceneWrapper';
 import { useDrawerStatus } from '@react-navigation/drawer';
 import { AppDispatch, RootState } from '../redux/store';
 import { resetTodos } from '../redux/reducers/todoReducer';
@@ -24,7 +24,7 @@ import User from '../assets/icon/user.svg';
 import Video from '../assets/icon/video.svg';
 import Trophy from '../assets/icon/trophy.svg';
 import { useTranslation } from 'react-i18next';
-import { updateUserStatus } from '../Utils/updateUserStatus';
+import { updateUserStatus } from '../utils/updateUserStatus';
 
 const HomeScreen = ({ navigation }: any) => {
   const user = useSelector((state: RootState) => state.auth.user);

@@ -14,7 +14,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import { formatDate } from '../Utils/formateDate';
+import { formatDate } from '../utils/formateDate';
 export interface User {
   email: string;
   id?: string;
@@ -29,26 +29,12 @@ interface Props {
   currentuser: any;
   url?: string;
 }
+
 const ChatItem = (props: Props) => {
   const { userName, uid, onPress, currentuser, url } = props; //uid = user select
   const [lastMessage, setLastmessage] = useState<any>(undefined);
   const user = useSelector((state: RootState) => state.auth.user);
-  // useEffect(() => {
-  //   getUser();
-  // }, []);
-  // const getUser = () => {
-  //   firestore()
-  //     .doc(`User/${uid}`)
-  //     .onSnapshot((snap: any) => {
-  //       if (snap.exists) {
-  //         setUser({
-  //           ...snap.data(),
-  //         });
-  //       } else {
-  //         console.log('task not found');
-  //       }
-  //     });
-  // };
+
   useEffect(() => {
     let roomId = getRoomId(user?.id ?? '', uid);
     const messagesRef = firestore()
@@ -69,10 +55,12 @@ const ChatItem = (props: Props) => {
 
     return unsubscribe;
   }, []);
+
   const getRoomId = useCallback((userId1: string, userId2: string) => {
     const sortedIds = [userId1, userId2].sort();
     return sortedIds.join('-');
   }, []);
+
   const renderLastmessage = () => {
     if (typeof lastMessage == 'undefined') return 'Loading...';
     if (lastMessage) {
@@ -83,6 +71,7 @@ const ChatItem = (props: Props) => {
       return 'Say hi!!!';
     }
   };
+
   const renderTime = () => {
     if (lastMessage) {
       let date = new Date(lastMessage?.createdAt?.seconds * 1000);
@@ -91,6 +80,7 @@ const ChatItem = (props: Props) => {
       return 'Time';
     }
   };
+  
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {url ? (

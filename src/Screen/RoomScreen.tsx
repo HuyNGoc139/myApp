@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   View,
@@ -23,8 +23,8 @@ import {
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import SpaceComponent from '../Components/SpaceComponent';
-import MessageList from '../Components/MessageList';
+import SpaceComponent from '../components/SpaceComponent';
+import MessageList from '../components/MessageList';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 // import MessageList from './components/MessageList';
@@ -34,22 +34,24 @@ export interface User {
   username: string;
   photo?: string;
 }
+
 const RoomScreen = ({ navigation, route }: any) => {
   const userSelect = route.params;
   const [message, setMessage] = useState<any[]>([]);
   const user = useSelector((state: RootState) => state.auth.user);
   const [textRef, setTextRef] = useState('');
+
   useEffect(() => {
     createRoom(); // Chỉ gọi createRoom sau khi getUser hoàn tất
     getAllMessage();
   }, [user?.id]);
 
-  const getRoomId = (userId1: string, userId2: string) => {
+  const getRoomId = useCallback((userId1: string, userId2: string) => {
     const sortedIds = [userId1, userId2].sort();
     return sortedIds.join('-');
-  };
+  }, []);
 
-  const createRoom = async () => {
+  const createRoom = useCallback(async () => {
     if (!user || !userSelect) {
       console.error('User information is missing.');
       return;
@@ -76,8 +78,9 @@ const RoomScreen = ({ navigation, route }: any) => {
     } else {
       console.log('Room already exists with ID:', roomId);
     }
-  };
-  const handleSendMessage = async () => {
+  }, [getRoomId, user, userSelect]);
+
+  const handleSendMessage = useCallback(async () => {
     let message = textRef.trim();
     if (!message) return;
     try {
@@ -88,41 +91,34 @@ const RoomScreen = ({ navigation, route }: any) => {
         userId: user?.id,
         text: message,
         senderName: user?.familyName + ' ' + user?.givenName,
-        // createdAt: firestore.FieldValue.serverTimestamp(),
         createdAt: new Date(),
       });
       await docRef.update({
         lastMessageAt: firestore.FieldValue.serverTimestamp(),
-        lastMessage: message, // Lưu nội dung tin nhắn cuối cùng (tuỳ chọn)
+        lastMessage: message, 
       });
       console.log('Message sent successfully');
-      setTextRef(''); // Xóa nội dung input sau khi gửi
+      setTextRef(''); 
     } catch (err) {
       console.log('Error sending message:', err);
     }
-  };
+  }, [getRoomId, textRef, user, userSelect]);
 
-  const getAllMessage = () => {
+  const getAllMessage = useCallback(() => {
     let roomId = getRoomId(user?.id ?? '', userSelect.id);
     const messagesRef = firestore()
       .collection('Rooms')
       .doc(roomId)
       .collection('messages');
-
-    // Tạo query để sắp xếp các tin nhắn theo thời gian tạo
     const q = messagesRef.orderBy('createdAt', 'asc');
-
-    // Lắng nghe thay đổi trên collection 'messages'
     const unsubscribe = q.onSnapshot(
       (snapshot) => {
-        // Lấy tất cả các tin nhắn từ snapshot
         let allMessages = snapshot.docs.map((doc) => ({
           id: doc.id,
-          roomId: roomId, // Lấy id của document
-          ...doc.data(), // Gộp dữ liệu của document
+          roomId: roomId, 
+          ...doc.data(), 
         }));
 
-        // Cập nhật trạng thái với danh sách tin nhắn đã sắp xếp
         setMessage(allMessages);
       },
       (error) => {
@@ -131,41 +127,7 @@ const RoomScreen = ({ navigation, route }: any) => {
     );
 
     return unsubscribe;
-  };
-
-  //   const confirmDeleteMessages = () => {
-  //     Alert.alert(
-  //       'Xóa tất cả tin nhắn',
-  //       'Bạn có chắc chắn muốn xóa tất cả tin nhắn không?',
-  //       [
-  //         { text: 'Cancel', style: 'cancel' },
-  //         { text: 'Delete', onPress: handleDeleteAllMessages },
-  //       ],
-  //       { cancelable: true },
-  //     );
-  //   };
-  //   // Hàm xóa tất cả tin nhắn
-  //   const handleDeleteAllMessages = async () => {
-  //     let roomId = getRoomId(userCurrent?.uid ?? '', userSelect.uid);
-  //     const messagesRef = firestore()
-  //       .collection('Rooms')
-  //       .doc(roomId)
-  //       .collection('messages');
-  //     const batch = firestore().batch();
-
-  //     try {
-  //       const snapshot = await messagesRef.get();
-  //       snapshot.docs.forEach(doc => {
-  //         batch.delete(doc.ref);
-  //       });
-  //       await batch.commit();
-  //       console.log('All messages deleted successfully');
-  //       Alert.alert('Đã xóa tất cả tin nhắn');
-  //     } catch (error) {
-  //       console.error('Error deleting all messages:', error);
-  //       Alert.alert('Lỗi xóa tin nhắn');
-  //     }
-  //   };
+  }, [getRoomId, user, userSelect]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {
   View,
@@ -23,11 +23,10 @@ import {
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import SpaceComponent from '../Components/SpaceComponent';
-import MessageList from '../Components/MessageList';
+import SpaceComponent from '../components/SpaceComponent';
+import MessageList from '../components/MessageList';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-// import MessageList from './components/MessageList';
 
 const RoomGroupScreen = ({ navigation, route }: any) => {
   const group = route.params;
@@ -38,7 +37,7 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
     getAllMessage();
   }, [user?.id]);
 
-  const handleSendMessage = async () => {
+  const handleSendMessage =  useCallback(async () => {
     let message = textRef.trim();
     if (!message) return;
     try {
@@ -48,34 +47,29 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
         userId: user?.id,
         text: message,
         senderName: user?.userName,
-        // createdAt: firestore.FieldValue.serverTimestamp(),
         createdAt: new Date(),
       });
       await docRef.update({
         lastMessageAt: firestore.FieldValue.serverTimestamp(),
         createdAt: new Date(),
-        lastMessage: message, // Lưu nội dung tin nhắn cuối cùng (tuỳ chọn)
+        lastMessage: message,
       });
       console.log('Message sent successfully');
-      setTextRef(''); // Xóa nội dung input sau khi gửi
+      setTextRef('');
     } catch (err) {
       console.log('Error sending message:', err);
     }
-  };
+  }, [textRef, user?.id, user?.userName, group.id]);
 
-  const getAllMessage = () => {
+  const getAllMessage = useCallback(() => {
     const messagesRef = firestore()
       .collection('Group')
       .doc(group.id)
       .collection('messages');
 
-    // Tạo query để sắp xếp các tin nhắn theo thời gian tạo
     const q = messagesRef.orderBy('createdAt', 'asc');
-
-    // Lắng nghe thay đổi trên collection 'messages'
     const unsubscribe = q.onSnapshot(
       (snapshot) => {
-        // Lấy tất cả các tin nhắn từ snapshot
         let allMessages = snapshot.docs.map((doc) => ({
           id: doc.id,
           groupId: group.id,
@@ -90,7 +84,7 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
     );
 
     return unsubscribe;
-  };
+  }, [group.id]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
