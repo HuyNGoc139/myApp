@@ -53,6 +53,7 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
       });
       await docRef.update({
         lastMessageAt: firestore.FieldValue.serverTimestamp(),
+        createdAt: new Date(),
         lastMessage: message, // Lưu nội dung tin nhắn cuối cùng (tuỳ chọn)
       });
       console.log('Message sent successfully');

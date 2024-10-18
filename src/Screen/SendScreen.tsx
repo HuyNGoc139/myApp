@@ -61,10 +61,10 @@ const SendScreen = ({ navigation }: any) => {
 
   //   return () => unsubscribe(); // Hủy lắng nghe khi component bị unmount
   // };
-  const listenToGroups = useCallback((currentUserId: string) => {
+  const listenToGroups = (currentUserId: string) => {
     const unsubscribe = firestore()
       .collection('Group')
-      .orderBy('lastMessageAt', 'desc')
+      .orderBy('createdAt', 'desc')
       .onSnapshot((snapshot) => {
         const updatedGroups: Group[] = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -83,9 +83,9 @@ const SendScreen = ({ navigation }: any) => {
       });
 
     return () => unsubscribe(); // Hủy lắng nghe khi component bị unmount
-  }, []);
+  };
 
-  const handleGetAllUsers = useCallback(async (currentUserId: string) => {
+  const handleGetAllUsers = async (currentUserId: string) => {
     try {
       const snapshot = await firestore().collection('User').get();
       if (snapshot.empty) {
@@ -106,7 +106,7 @@ const SendScreen = ({ navigation }: any) => {
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  };
 
   return (
     <ImageBackground
