@@ -24,6 +24,7 @@ import User from '../assets/icon/user.svg';
 import Video from '../assets/icon/video.svg';
 import Trophy from '../assets/icon/trophy.svg';
 import { useTranslation } from 'react-i18next';
+import { updateUserStatus } from '../Utils/updateUserStatus';
 
 const HomeScreen = ({ navigation }: any) => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -32,7 +33,8 @@ const HomeScreen = ({ navigation }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const drawerStatus = useDrawerStatus();
   const { t } = useTranslation();
-  const handleLogout = useCallback(() => {
+  const handleLogout = useCallback(async() => {
+    await updateUserStatus('offline');
     dispatch(logoutUser());
     dispatch(resetTodos());
   }, [dispatch]);

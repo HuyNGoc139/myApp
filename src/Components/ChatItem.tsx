@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
@@ -69,10 +69,10 @@ const ChatItem = (props: Props) => {
 
     return unsubscribe;
   }, []);
-  const getRoomId = (userId1: string, userId2: string) => {
+  const getRoomId = useCallback((userId1: string, userId2: string) => {
     const sortedIds = [userId1, userId2].sort();
     return sortedIds.join('-');
-  };
+  }, []);
   const renderLastmessage = () => {
     if (typeof lastMessage == 'undefined') return 'Loading...';
     if (lastMessage) {
@@ -93,8 +93,8 @@ const ChatItem = (props: Props) => {
   };
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      {user?.photo ? (
-        <Image style={styles.image} source={{ uri: user.photo }} />
+      {url ? (
+        <Image style={styles.image} source={{ uri: url }} />
       ) : (
         <Image
           style={styles.image}

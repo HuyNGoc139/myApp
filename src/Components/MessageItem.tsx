@@ -71,7 +71,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ mess, currenUser,type }) => {
           alignItems:'center'
         }}>
           
-            <Image
+           { type=='group'?<Image
               style={{
                 height: 48,
                 width: 48,
@@ -79,7 +79,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ mess, currenUser,type }) => {
                 marginRight: 6,
               }}
               source={require('../assets/avatar.png')}
-            />
+            />:<></>}
           
           <View style={{ backgroundColor: '#a4dede', borderRadius: 25, padding: 20 }}>
           <View style={{

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, ImageBackground, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import HeaderComponent from '../Components/HeaderComponent';
 import firestore from '@react-native-firebase/firestore';
@@ -8,11 +8,21 @@ import ChatItem from '../Components/ChatItem';
 import { Edit } from 'iconsax-react-native';
 import ModalAddGroup from '../Components/ModalAddGroup';
 import GroupItem from '../Components/GroupItem';
+import OnlineUsers from '../Components/UserActiveComponent';
 export interface SelectModel {
   userName: string;
   id: string;
   lastmesage?: any;
   photo?: string;
+}
+interface Group {
+  id?:string,
+  members: string[]; // Danh sách các thành viên
+  lastMessageAt?: any; // Thời gian gửi tin nhắn cuối cùng
+  // Thêm các thuộc tính khác nếu cần thiết
+  createdAt:any,
+  groupName:string,
+  lastMessage:string
 }
 
 const SendScreen = ({ navigation }: any) => {
@@ -30,22 +40,45 @@ const SendScreen = ({ navigation }: any) => {
   }, [user]);
 
   // Lắng nghe thay đổi trong nhóm
-  const listenToGroups = (currentUserId: string) => {
+  // const listenToGroups = (currentUserId: string) => {
+  //   const unsubscribe = firestore()
+  //     .collection('Group')
+  //     .where('members', 'array-contains', currentUserId)
+  //     .onSnapshot(snapshot => {
+  //       const updatedGroups = snapshot.docs.map(doc => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+  //       setGroups(updatedGroups);
+  //     });
+
+  //   return () => unsubscribe(); // Hủy lắng nghe khi component bị unmount
+  // };
+  const listenToGroups = useCallback((currentUserId: string) => {
     const unsubscribe = firestore()
       .collection('Group')
-      .where('members', 'array-contains', currentUserId)
+      .orderBy('lastMessageAt', 'desc')
       .onSnapshot(snapshot => {
-        const updatedGroups = snapshot.docs.map(doc => ({
+        const updatedGroups: Group[] = snapshot.docs.map(doc => ({
           id: doc.id,
-          ...doc.data(),
+          members: doc.data().members || [], // Đảm bảo có members
+          lastMessageAt: doc.data().lastMessageAt || null, // Đảm bảo có lastMessageAt
+          createdAt: doc.data().createdAt || new Date(), // Đảm bảo có createdAt
+          groupName: doc.data().groupName || '', // Đảm bảo có groupName
+          lastMessage: doc.data().lastMessage || '',
         }));
-        setGroups(updatedGroups);
+        const filteredGroups = updatedGroups.filter(group =>
+          group.members?.includes(currentUserId)
+        );
+  
+        // Cập nhật state với nhóm đã lọc
+        setGroups(filteredGroups);
       });
-
+  
     return () => unsubscribe(); // Hủy lắng nghe khi component bị unmount
-  };
-
-  const handleGetAllUsers = async (currentUserId: string) => {
+  }, []);
+  
+  const handleGetAllUsers = useCallback(async (currentUserId: string) => {
     try {
       const snapshot = await firestore().collection('User').get();
       if (snapshot.empty) {
@@ -66,7 +99,8 @@ const SendScreen = ({ navigation }: any) => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, []);
+
 
   return (
     <ImageBackground
@@ -76,6 +110,8 @@ const SendScreen = ({ navigation }: any) => {
     >
       <View style={{ flex: 1 }}>
         <HeaderComponent title='ChatScreen' />
+          {/* UserActive */}
+          <OnlineUsers/>
         <View style={{ flexDirection: 'row', marginLeft: 20, alignItems: 'center' }}>
           <Text style={{ fontSize: 18, color: 'white' }}>Group</Text>
           <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => setModalVisible(true)}>
@@ -115,6 +151,7 @@ const SendScreen = ({ navigation }: any) => {
                 currentuser={user}
                 userName={item.userName}
                 uid={item.id}
+                url={item.photo}
               />
             )}
           />

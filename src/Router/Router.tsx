@@ -42,6 +42,10 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import RoomScreen from '../Screen/RoomScreen';
 import RoomGroupScreen from '../Screen/RoomGroup';
+import auth from '@react-native-firebase/auth';
+import { AppState } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import { updateUserStatus } from '../Utils/updateUserStatus';
 const Drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
@@ -51,37 +55,16 @@ interface DrawerImageProps {
   source: any;
 }
 
-const drawerImage: React.FC<DrawerImageProps> = ({ focused, source }) => {
-  const tintColor = focused
-    ? 'rgba(247, 112, 152, 1)'
-    : 'rgba(149, 158, 167, 1)';
 
-  return (
-    <View
-      style={{ width: 18, justifyContent: 'flex-end', alignItems: 'center' }}
-    >
-      <Image
-        source={source}
-        style={{
-          tintColor: tintColor,
-        }}
-      />
-    </View>
-  );
-};
-const drawerImage2: React.FC<DrawerImageProps> = ({ focused, source }) => {
-  const tintColor = focused
-    ? 'rgba(247, 112, 152, 1)'
-    : 'rgba(149, 158, 167, 1)';
 
-  return (
-    <View
-      style={{ width: 18, justifyContent: 'flex-end', alignItems: 'center' }}
-    >
-      {React.cloneElement(source({ fill: tintColor }))}
-    </View>
-  );
-};
+// Đăng ký sự kiện khi ứng dụng chuyển trạng thái
+AppState.addEventListener('change', (nextAppState) => {
+  if (nextAppState === 'active') {
+    updateUserStatus('online');
+  } else {
+    updateUserStatus('offline');
+  }
+});
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
   // const userName = useSelector((state: RootState) => state.auth.user?.json?.username);
@@ -451,7 +434,6 @@ const Router: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.token);
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation();
-  
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isLogin ? (
@@ -489,5 +471,4 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-
 export default Router;

@@ -26,6 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import i18next from '../locales/i18n';
 import { changeLanguage } from '../redux/reducers/languageSlice';
+import { updateUserStatus } from '../Utils/updateUserStatus';
 
 const LoginScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
