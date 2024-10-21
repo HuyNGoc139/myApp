@@ -1,6 +1,6 @@
 import { View, Text, ImageBackground } from 'react-native';
-import HeaderComponent from '../components/HeaderComponent';
-import DrawerSceneWrapper from '../components/DrawerSceneWrapper';
+import HeaderComponent from '../components/common/HeaderComponent';
+import DrawerSceneWrapper from '../components/common/DrawerSceneWrapper';
 
 const HelpScreen = () => {
   return (

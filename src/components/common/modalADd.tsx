@@ -9,8 +9,11 @@ import {
   Modal,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { addTodo } from '../redux/reducers/todoReducer';
-import { getTodosFromStorage, saveTodosToStorage } from '../utils/todoStorage';
+import { addTodo } from '../../redux/reducers/todoReducer';
+import {
+  getTodosFromStorage,
+  saveTodosToStorage,
+} from '../../utils/todoStorage';
 
 interface ModalAddTodoProps {
   visible: boolean;

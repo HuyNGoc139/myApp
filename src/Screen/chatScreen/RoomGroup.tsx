@@ -23,10 +23,10 @@ import {
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import SpaceComponent from '../components/SpaceComponent';
-import MessageList from '../components/MessageList';
+import SpaceComponent from '../../components/common/SpaceComponent';
+import MessageList from '../../components/chat/MessageList';
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+import { RootState } from '../../redux/store';
 
 const RoomGroupScreen = ({ navigation, route }: any) => {
   const group = route.params;
@@ -37,7 +37,7 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
     getAllMessage();
   }, [user?.id]);
 
-  const handleSendMessage =  useCallback(async () => {
+  const handleSendMessage = useCallback(async () => {
     let message = textRef.trim();
     if (!message) return;
     try {
@@ -122,7 +122,7 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
                 borderRadius: 100,
                 marginLeft: 12,
               }}
-              source={require('../assets/avatargroup.png')}
+              source={require('../../assets/avatargroup.png')}
             />
           )}
           <Text

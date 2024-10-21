@@ -19,8 +19,8 @@ import UserInfo from '../screen/UserInfo';
 import LoginScreen from '../screen/LoginScreen';
 import RewardScreen from '../screen/RewardScreen';
 import { AppDispatch, RootState } from '../redux/store';
-import InviteScreen from '../screen/InviteScreen';
-import SendScreen from '../screen/SendScreen';
+import InviteScreen from '../screen/weather/InviteScreen';
+import SendScreen from '../screen/chatScreen/SendScreen';
 import VideoScreen from '../screen/VideoScreen';
 import HelpScreen from '../screen/HelpandSupport';
 import DisclaimerScreen from '../screen/Disclaimer';
@@ -40,12 +40,13 @@ import Trophy from '../assets/icon/trophy.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import RoomScreen from '../screen/RoomScreen';
-import RoomGroupScreen from '../screen/RoomGroup';
+import RoomScreen from '../screen/chatScreen/RoomScreen';
+import RoomGroupScreen from '../screen/chatScreen/RoomGroup';
 import auth from '@react-native-firebase/auth';
 import { AppState } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { updateUserStatus } from '../utils/updateUserStatus';
+import { HandelNotifications } from '../utils/HandleSendNoti';
 
 const Drawer = createDrawerNavigator();
 
@@ -440,7 +441,7 @@ const Router: React.FC = () => {
       } else {
         updateUserStatus('offline');
       }
-    })
+    });
 
     return () => {
       subscription.remove();

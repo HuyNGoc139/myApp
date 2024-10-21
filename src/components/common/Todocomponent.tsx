@@ -7,10 +7,13 @@ import {
   toggleTodo,
   removeTodo,
   selectFilteredTodos,
-} from '../redux/reducers/todoReducer';
+} from '../../redux/reducers/todoReducer';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getTodosFromStorage, saveTodosToStorage } from '../utils/todoStorage';
+import {
+  getTodosFromStorage,
+  saveTodosToStorage,
+} from '../../utils/todoStorage';
 
 // Define a type for the Todo item
 interface Todo {

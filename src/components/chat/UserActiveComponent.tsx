@@ -59,7 +59,7 @@ const OnlineUsers = () => {
                 />
               ) : (
                 <Image
-                  source={require('../assets/avatar.png')}
+                  source={require('../../assets/avatar.png')}
                   style={{
                     width: 48,
                     height: 48,
@@ -69,7 +69,7 @@ const OnlineUsers = () => {
                 />
               )}
               <Image
-                source={require('../assets/active.png')}
+                source={require('../../assets/active.png')}
                 tintColor={'green'}
                 style={{
                   width: 12,

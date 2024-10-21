@@ -20,7 +20,7 @@ const TextComponent = (props: Props) => {
       >
         {title}
       </Text>
-      {isNext ? <Image source={require('../assets/Union.png')} /> : null}
+      {isNext ? <Image source={require('../../assets/Union.png')} /> : null}
     </TouchableOpacity>
   );
 };

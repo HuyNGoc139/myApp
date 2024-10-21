@@ -8,10 +8,11 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import RewardComponent from '../components/RewardComponent';
-import DrawerSceneWrapper from '../components/DrawerSceneWrapper';
+
+import DrawerSceneWrapper from '../components/common/DrawerSceneWrapper';
 import LinearGradient from 'react-native-linear-gradient';
 import { NavigationProp } from '@react-navigation/native';
+import RewardComponent from '../components/common/RewardComponent';
 
 const RewardScreen = ({ navigation }: any) => {
   const Data = [

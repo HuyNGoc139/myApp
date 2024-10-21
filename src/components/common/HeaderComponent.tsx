@@ -16,7 +16,7 @@ const HeaderComponent = (props: Props) => {
           navigation.goBack();
         }}
       >
-        <Image source={require('../assets/iconLeft.png')} />
+        <Image source={require('../../assets/iconLeft.png')} />
       </TouchableOpacity>
       <Text style={styles.text}>{title}</Text>
     </View>

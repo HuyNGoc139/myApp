@@ -13,8 +13,8 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
-import { formatDate } from '../utils/formateDate';
+import { RootState } from '../../redux/store';
+import { formatDate } from '../../utils/formateDate';
 export interface User {
   email: string;
   id?: string;
@@ -80,13 +80,16 @@ const ChatItem = (props: Props) => {
       return 'Time';
     }
   };
-  
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {url ? (
         <Image style={styles.image} source={{ uri: url }} />
       ) : (
-        <Image style={styles.image} source={require('../assets/avatar.png')} />
+        <Image
+          style={styles.image}
+          source={require('../../assets/avatar.png')}
+        />
       )}
       <View style={{ flex: 1, marginLeft: 10 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

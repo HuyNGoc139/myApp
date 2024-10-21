@@ -14,7 +14,7 @@ import { Checkbox } from 'react-native-paper';
 
 import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+import { RootState } from '../../redux/store';
 export interface SelectModel {
   userName: string;
   id: string;
@@ -36,7 +36,7 @@ const ModalAddGroup: React.FC<ModalAddGroupProps> = ({
 }) => {
   const [selectedUsers, setSelectedUsers] = useState<SelectModel[]>([]);
   const user = useSelector((state: RootState) => state.auth.user);
-  
+
   const handleToggleUser = (user: SelectModel) => {
     const isSelected = selectedUsers.some(
       (selected) => selected.id === user.id
@@ -127,7 +127,7 @@ const ModalAddGroup: React.FC<ModalAddGroupProps> = ({
                   <Image source={{ uri: item.photo }} style={styles.avatar} />
                 ) : (
                   <Image
-                    source={require('../assets/avatar.png')}
+                    source={require('../../assets/avatar.png')}
                     style={styles.avatar}
                   />
                 )}

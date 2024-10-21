@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/authActions';
-import DrawerSceneWrapper from '../components/DrawerSceneWrapper';
+import DrawerSceneWrapper from '../components/common/DrawerSceneWrapper';
 import { useDrawerStatus } from '@react-navigation/drawer';
 import { AppDispatch, RootState } from '../redux/store';
 import { resetTodos } from '../redux/reducers/todoReducer';

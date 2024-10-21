@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, ImageBackground, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import CheckBox from '@react-native-community/checkbox';
 
-import HeaderComponent from '../components/HeaderComponent';
-import InputComponent from '../components/InputComponent';
-import ButtonComponent from '../components/ButtonComponent';
+import HeaderComponent from '../components/common/HeaderComponent';
+import InputComponent from '../components/common/InputComponent';
+import ButtonComponent from '../components/common/ButtonComponent';
 import { toggleTodo, updateTodo } from '../redux/reducers/todoReducer';
 import { useNavigation } from '@react-navigation/native';
 import { getTodosFromStorage, saveTodosToStorage } from '../utils/todoStorage';

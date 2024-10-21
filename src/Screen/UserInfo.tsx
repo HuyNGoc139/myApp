@@ -8,12 +8,12 @@ import {
   ImageBackground,
   Image,
 } from 'react-native';
-import HeaderComponent from '../components/HeaderComponent';
-import TextComponent from '../components/TextComponent';
-import SpaceComponent from '../components/SpaceComponent';
-import UserInfoInput from '../components/UserInfoComponent';
+import HeaderComponent from '../components/common/HeaderComponent';
+import TextComponent from '../components/common/TextComponent';
+import SpaceComponent from '../components/common/SpaceComponent';
+import UserInfoInput from '../components/common/UserInfoComponent';
 import { useSelector } from 'react-redux';
-import DrawerSceneWrapper from '../components/DrawerSceneWrapper';
+import DrawerSceneWrapper from '../components/common/DrawerSceneWrapper';
 import { RootState } from '../redux/store';
 import { useTranslation } from 'react-i18next';
 

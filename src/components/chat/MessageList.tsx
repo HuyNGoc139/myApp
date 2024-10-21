@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import MessageItem from './MessageItem';
-import { mess } from '../model/model';
+import { mess } from '../../model/model';
 
 interface MessageListProps {
   messages: mess[]; // Bạn có thể thay đổi 'any' thành type cụ thể cho tin nhắn

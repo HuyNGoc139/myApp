@@ -14,9 +14,9 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 
 import { validateEmail, validatePassword } from '../utils/validate';
-import SpaceComponent from '../components/SpaceComponent';
-import InputComponent from '../components/InputComponent';
-import ButtonComponent from '../components/ButtonComponent';
+import SpaceComponent from '../components/common/SpaceComponent';
+import InputComponent from '../components/common/InputComponent';
+import ButtonComponent from '../components/common/ButtonComponent';
 import { loginUser, loginggUser } from '../redux/authActions';
 import { AppDispatch, RootState } from '../redux/store';
 import Cog from '../assets/icon/cogs.svg';

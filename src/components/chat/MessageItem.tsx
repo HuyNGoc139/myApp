@@ -14,9 +14,9 @@ import {
 import { More, Save2 } from 'iconsax-react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import { mess } from '../model/model';
-import { formatDate } from '../utils/formateDate';
-import { handleDateTime } from '../utils/handleDateTime';
+import { mess } from '../../model/model';
+import { formatDate } from '../../utils/formateDate';
+import { handleDateTime } from '../../utils/handleDateTime';
 
 // Định nghĩa type cho props của MessageItem
 interface MessageItemProps {
@@ -100,7 +100,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
                 borderRadius: 100,
                 marginRight: 6,
               }}
-              source={require('../assets/avatar.png')}
+              source={require('../../assets/avatar.png')}
             />
           ) : (
             <></>

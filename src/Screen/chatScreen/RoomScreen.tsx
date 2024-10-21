@@ -23,10 +23,10 @@ import {
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import SpaceComponent from '../components/SpaceComponent';
-import MessageList from '../components/MessageList';
+import SpaceComponent from '../../components/common/SpaceComponent';
+import MessageList from '../../components/chat/MessageList';
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+import { RootState } from '../../redux/store';
 // import MessageList from './components/MessageList';
 export interface User {
   email: string;
@@ -95,10 +95,10 @@ const RoomScreen = ({ navigation, route }: any) => {
       });
       await docRef.update({
         lastMessageAt: firestore.FieldValue.serverTimestamp(),
-        lastMessage: message, 
+        lastMessage: message,
       });
       console.log('Message sent successfully');
-      setTextRef(''); 
+      setTextRef('');
     } catch (err) {
       console.log('Error sending message:', err);
     }
@@ -115,8 +115,8 @@ const RoomScreen = ({ navigation, route }: any) => {
       (snapshot) => {
         let allMessages = snapshot.docs.map((doc) => ({
           id: doc.id,
-          roomId: roomId, 
-          ...doc.data(), 
+          roomId: roomId,
+          ...doc.data(),
         }));
 
         setMessage(allMessages);
@@ -165,7 +165,7 @@ const RoomScreen = ({ navigation, route }: any) => {
                 borderRadius: 100,
                 marginLeft: 12,
               }}
-              source={require('../assets/avatar.png')}
+              source={require('../../assets/avatar.png')}
             />
           )}
           <Text

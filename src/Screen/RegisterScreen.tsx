@@ -12,9 +12,9 @@ import {
   Alert,
 } from 'react-native';
 import { validateEmail, validatePassword } from '../utils/validate';
-import SpaceComponent from '../components/SpaceComponent';
-import InputComponent from '../components/InputComponent';
-import ButtonComponent from '../components/ButtonComponent';
+import SpaceComponent from '../components/common/SpaceComponent';
+import InputComponent from '../components/common/InputComponent';
+import ButtonComponent from '../components/common/ButtonComponent';
 import CheckBox from '@react-native-community/checkbox';
 import { registerUser } from '../redux/authActions';
 import { AppDispatch, RootState } from '../redux/store';

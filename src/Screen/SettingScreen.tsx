@@ -6,10 +6,10 @@ import {
   ImageBackground,
   Dimensions,
 } from 'react-native';
-import HeaderComponent from '../components/HeaderComponent';
-import TextComponent from '../components/TextComponent';
-import SpaceComponent from '../components/SpaceComponent';
-import DrawerSceneWrapper from '../components/DrawerSceneWrapper';
+import HeaderComponent from '../components/common/HeaderComponent';
+import TextComponent from '../components/common/TextComponent';
+import SpaceComponent from '../components/common/SpaceComponent';
+import DrawerSceneWrapper from '../components/common/DrawerSceneWrapper';
 import { useTranslation } from 'react-i18next';
 
 const height = Dimensions.get('screen').height;

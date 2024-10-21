@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import HeaderComponent from '../components/HeaderComponent';
+import HeaderComponent from '../../components/common/HeaderComponent';
 import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
-import ChatItem from '../components/ChatItem';
+import { RootState } from '../../redux/store';
+import ChatItem from '../../components/chat/ChatItem';
 import { Edit } from 'iconsax-react-native';
-import ModalAddGroup from '../components/ModalAddGroup';
-import GroupItem from '../components/GroupItem';
-import OnlineUsers from '../components/UserActiveComponent';
+import ModalAddGroup from '../../components/chat/ModalAddGroup';
+import GroupItem from '../../components/chat/GroupItem';
+import OnlineUsers from '../../components/chat/UserActiveComponent';
 export interface SelectModel {
   userName: string;
   id: string;
@@ -78,7 +78,6 @@ const SendScreen = ({ navigation }: any) => {
           group.members?.includes(currentUserId)
         );
 
-              
         setGroups(filteredGroups);
       });
 
@@ -110,7 +109,7 @@ const SendScreen = ({ navigation }: any) => {
 
   return (
     <ImageBackground
-      source={require('../assets/bg.png')}
+      source={require('../../assets/bg.png')}
       style={{ flex: 1 }}
       resizeMode="cover"
     >
@@ -140,7 +139,7 @@ const SendScreen = ({ navigation }: any) => {
                 onPress={() => navigation.navigate('RoomGroup', { ...item })}
                 key={item.id}
                 currentuser={user}
-                userName={item.groupName} 
+                userName={item.groupName}
                 groupid={item.id}
                 url={item.photo}
               />

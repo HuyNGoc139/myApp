@@ -21,7 +21,7 @@ const RewardComponent = (props: Props) => {
       <View style={{ flexDirection: 'row' }}>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.medalContainer}>
-          <Image source={require('../assets/medal.png')} />
+          <Image source={require('../../assets/medal.png')} />
           <Text style={styles.points}>{points}</Text>
         </View>
       </View>
@@ -40,7 +40,7 @@ const RewardComponent = (props: Props) => {
       {status == 'Achieved' ? (
         <View style={styles.row}>
           <Text style={styles.progressText}>Achieved</Text>
-          <Image source={require('../assets/tick.png')} />
+          <Image source={require('../../assets/tick.png')} />
         </View>
       ) : (
         <></>
