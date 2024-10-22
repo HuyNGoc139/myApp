@@ -16,26 +16,23 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import InputComponent from '../../components/common/InputComponent';
 import { useCallback, useEffect, useState } from 'react';
 import { Calendar, Location, SearchNormal } from 'iconsax-react-native';
-import Geolocation from '@react-native-community/geolocation';
-import { PermissionsAndroid } from 'react-native';
 import debounce from 'lodash/debounce';
-
 import axios from 'axios';
-import { fetchLocation, fetchWeatherForeCast } from '../../api/weather';
+import { fetchLocation, fetchWeatherForeCast,fetchCurrentLocation } from '../../api/weather';
+
 import { Weather } from '../../model/weather';
 import { weatherImages } from '../../utils/weatherImage';
 import { WeatherCondition } from '../../utils/weatherImage';
+import Geolocation from 'react-native-geolocation-service';
+import {PermissionsAndroid, Platform} from 'react-native';
+
 interface Location {
   latitude: number;
   longitude: number;
 }
-interface Location {
+interface Locations {
   name: string;
-  // Có thể thêm các thuộc tính khác của Location nếu cần
 }
-
-const API_KEY ='68733361387a4cdd9b870705242110'
-
 const InviteScreen = () => {
   const[search,setSearch]=useState('')
   const[showSearch,setShowSearch]=useState(false)
@@ -43,11 +40,64 @@ const InviteScreen = () => {
   const [currentLocation, setCurrentLocation] = useState<Location | null>(null); // lưu vị trí hiện tại
   const [address, setAddress] = useState<string | undefined>('');
   const [weather, setWeather] = useState<any>({});
+  useEffect(() => {
+    const fetchLocationWeather = async () => {
+      const hasPermission = await requestLocationPermission();
+      if (!hasPermission) return;
+  
+      Geolocation.getCurrentPosition(
+        async (position) => {
+          console.log('====================================');
+          console.log(position);
+          console.log('====================================');
+          const { latitude, longitude } = position.coords;
+          setCurrentLocation({ latitude, longitude });
 
-  const handelLocation = async (loc: Location) => {
-    // console.log('====================================');
-    // console.log(loc);
-    // console.log('====================================');
+          const data = await fetchCurrentLocation({
+            latitude,
+            longitude,
+            day: '7', 
+          });
+  
+          if (data) {
+            setWeather(data);
+          } else {
+            console.log("Không thể lấy dữ liệu thời tiết từ vị trí hiện tại");
+          }
+        },
+        (error) => {
+          console.error("Lỗi khi lấy vị trí:", error);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+    };
+  
+    fetchLocationWeather(); 
+  }, []);
+
+  const requestLocationPermission = useCallback(async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: "Location Permission",
+            message: "This app needs access to your location.",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK",
+          }
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn("Lỗi khi xin quyền vị trí:", err);
+        return false;
+      }
+    }
+    return true; // Trên iOS thì luôn trả về true
+  }, []);
+
+  const handelLocation = async (loc: Locations) => {
     setShowSearch(false);
     setLocations([]);
     try {
@@ -56,30 +106,11 @@ const InviteScreen = () => {
         day: '7',
       });
       setWeather(data);
-      // console.log(data);
     } catch (error) {
       console.log('err:', error);
     }
   };
-  const requestLocationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Location Permission",
-          message: "This app needs access to your location.",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK"
-        }
-      );
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    } catch (err) {
-      console.warn(err);
-      return false;
-    }
-  };
-  
+
   const handleSearch = (val: string)=> {
     if(val.length>2){
       fetchLocation({ cityName: val }).then((data) => {
