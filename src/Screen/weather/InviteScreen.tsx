@@ -60,15 +60,9 @@ const InviteScreen = () => {
             longitude,
             day: '7',
           });
-
-          if (data) {
             setWeather(data);
-          } else {
-            console.log('Không thể lấy dữ liệu thời tiết từ vị trí hiện tại');
-          }
         },
         (error) => {
-          console.error('Lỗi khi lấy vị trí:', error);
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
@@ -92,37 +86,36 @@ const InviteScreen = () => {
         );
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
-        console.warn('Lỗi khi xin quyền vị trí:', err);
         return false;
       }
     }
     return true; // Trên iOS thì luôn trả về true
   }, []);
 
-  const handelLocation = async (loc: Locations) => {
-    setShowSearch(false);
-    setLocations([]);
-    try {
-      const data = await fetchWeatherForeCast({
-        city: loc.name,
-        day: '7',
-      });
-      setWeather(data);
-    } catch (error) {
-      console.log('err:', error);
-    }
-  };
+  
+const handelLocation = useCallback(async (loc: Locations) => {
+  setShowSearch(false);
+  setLocations([]);
+  try {
+    const data = await fetchWeatherForeCast({
+      city: loc.name,
+      day: '7',
+    });
+    setWeather(data);
+  } catch (error) {
+    console.log('err:', error);
+  }
+}, []);
 
-  const handleSearch = (val: string) => {
-    if (val.length > 2) {
-      fetchLocation({ cityName: val }).then((data) => {
-        setLocations(data);
-        return; // Trả về một giá trị void
-      });
-    } else return;
-  };
+const handleSearch = useCallback((val: string) => {
+  if (val.length > 2) {
+    fetchLocation({ cityName: val }).then((data) => {
+      setLocations(data);
+    });
+  }
+}, []);
 
-  const handleTextDebounce = useCallback(debounce(handleSearch, 1200), []);
+const handleTextDebounce = useCallback(debounce(handleSearch, 800), [handleSearch]);
   const { current, location } = weather || {};
 
   return (
