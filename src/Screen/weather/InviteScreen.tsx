@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  Alert,
 } from 'react-native';
 import HeaderComponent from '../../components/common/HeaderComponent';
 import DrawerSceneWrapper from '../../components/common/DrawerSceneWrapper';
@@ -20,10 +21,17 @@ import { PermissionsAndroid } from 'react-native';
 import debounce from 'lodash/debounce';
 
 import axios from 'axios';
-import { fetchLocation } from '../../api/weather';
+import { fetchLocation, fetchWeatherForeCast } from '../../api/weather';
+import { Weather } from '../../model/weather';
+import { weatherImages } from '../../utils/weatherImage';
+import { WeatherCondition } from '../../utils/weatherImage';
 interface Location {
   latitude: number;
   longitude: number;
+}
+interface Location {
+  name: string;
+  // Có thể thêm các thuộc tính khác của Location nếu cần
 }
 
 const API_KEY ='68733361387a4cdd9b870705242110'
@@ -34,11 +42,25 @@ const InviteScreen = () => {
   const[locations,setLocations]=useState<any[]>([])
   const [currentLocation, setCurrentLocation] = useState<Location | null>(null); // lưu vị trí hiện tại
   const [address, setAddress] = useState<string | undefined>('');
-  
-  const handelLocation=(loc:string)=>{
-    console.log(loc)
-    
-  }
+  const [weather, setWeather] = useState<any>({});
+
+  const handelLocation = async (loc: Location) => {
+    // console.log('====================================');
+    // console.log(loc);
+    // console.log('====================================');
+    setShowSearch(false);
+    setLocations([]);
+    try {
+      const data = await fetchWeatherForeCast({
+        city: loc.name,
+        day: '7',
+      });
+      setWeather(data);
+      // console.log(data);
+    } catch (error) {
+      console.log('err:', error);
+    }
+  };
   const requestLocationPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -61,14 +83,16 @@ const InviteScreen = () => {
   const handleSearch = (val: string)=> {
     if(val.length>2){
       fetchLocation({ cityName: val }).then((data) => {
-        console.log('locations:', data);
         setLocations(data)
         return; // Trả về một giá trị void
       });
     }
-    else setLocations([])
+    else return
   };
-  const handleTextDebounce=useCallback(debounce(handleSearch,2000),[])
+
+  const handleTextDebounce=useCallback(debounce(handleSearch,1200),[])
+  const {current,location}=weather||{}
+
   return (
     <ImageBackground
       source={require('../../assets/bg.png')}
@@ -105,7 +129,7 @@ const InviteScreen = () => {
           {
             locations.map((loc,index)=>{
               return(
-                <TouchableOpacity key={index}  onPress={()=>handelLocation('kaka')}
+                <TouchableOpacity key={index}  onPress={()=>handelLocation(loc)}
                 style={{padding:16,
                 borderBottomWidth:1,
                 borderBottomColor:'gray',
@@ -126,42 +150,43 @@ const InviteScreen = () => {
     <View style={{flex:1, marginHorizontal:20,marginBottom:8,justifyContent:'space-around'}}>
       {/* Name */}
       <Text style={{color:'white',textAlign:'center',fontWeight:'700',fontSize:20}}>
-        Ho Chi Minh,{' '}
+        {location?.name?location.name:"Ha Noi"}{', '}
         <Text style={{fontWeight:'400',fontSize:18}}>
-        Viet Nam
+        {location?.country?location.country:"Viet Nam"}
       </Text>
       </Text>
 
       {/* Weather Image */}
 
       <View style={{flexDirection:'row',justifyContent:'center'}}>
-        <Image style={{width:240,height:240}} source={require('../../assets/weather/sun.png')}/>
+      {current?.condition.icon?<Image style={{width:240,height:240}} source={weatherImages[current?.condition?.text as WeatherCondition]}/>
+        :<Image style={{width:240,height:240}} source={require('../../assets/weather/sun.png')}/>}
       </View>
       {/* Nhiet do */}
       <View>
       <Text style={{color:'white',textAlign:'center',fontWeight:'700',fontSize:60}}>
-        23&#176;
+        {current?.temp_c}&#176;
       </Text>
       <Text style={{color:'white',textAlign:'center',fontWeight:'400',fontSize:24}}>
-        Partly Cloudy
+        {current?.condition.text}
       </Text>
       </View>
       {/* other weather */}
       <View style={{flexDirection:'row',justifyContent:'space-between',}}>
         <View style={{flexDirection:'row',alignItems:'center'}}>
-          <Image style={{width:24,height:24,marginRight:6}} source={require('../../assets/iconweather/wind.png')}/>
+         <Image style={{width:24,height:24,marginRight:6}} source={require('../../assets/iconweather/wind.png')}/>
           <Text style={{color:'white',textAlign:'center',fontWeight:'400',fontSize:18}}>
-            22km
+            {current?.wind_kph}km
           </Text>
         </View>
         <View style={{flexDirection:'row',alignItems:'center'}}>
-          <Image style={{width:24,height:24,marginRight:6}} source={require('../../assets/iconweather/wind.png')}/>
+          <Image style={{width:24,height:24,marginRight:6}} source={require('../../assets/iconweather/drop.png')}/>
           <Text style={{color:'white',textAlign:'center',fontWeight:'400',fontSize:18}}>
-            25%
+            {current?.humidity}%
           </Text>
         </View>
         <View style={{flexDirection:'row',alignItems:'center'}}>
-          <Image style={{width:24,height:24,marginRight:6}} source={require('../../assets/iconweather/wind.png')}/>
+          <Image style={{width:24,height:24,marginRight:6}} source={require('../../assets/iconweather/sun.png')}/>
           <Text style={{color:'white',textAlign:'center',fontWeight:'400',fontSize:18}}>
             6:05 AM
           </Text>
@@ -182,67 +207,29 @@ const InviteScreen = () => {
         showsHorizontalScrollIndicator={false}
         style={{marginTop:16}}
         >
-          <View style={{backgroundColor:'rgba(255, 255, 255, 0.1)',
+          {weather?.forecast?.forecastday.map((item: any,index: any)=>{
+            let date = new Date(item.date);
+            let options: Intl.DateTimeFormatOptions = { weekday: 'long' }; // Đặt kiểu chính xác cho options
+            let dayName = date.toLocaleDateString('en-US', options);
+            return(
+              <View key={index}
+              style={{backgroundColor:'rgba(255, 255, 255, 0.1)',
           paddingVertical:10,
           paddingHorizontal:24,
           borderRadius:20,
           justifyContent:'center',alignItems:'center',
-          marginRight:16
+          marginRight:16,
           }}>
-            <Image style={{width:52,height:52}} source={require('../../assets/weather/heavyrain.png')}/>
+            <Image style={{width:52,height:52}} source={{uri:'http:'+item?.day?.condition?.icon}}/>
             <Text style={{color:'white',fontSize:18,fontWeight:'600'}}>
-              13&#176;
+              {item?.day?.avgtemp_c}&#176;
             </Text>
             <Text style={{color:'white'}}>
-              Monday
+              {dayName}
             </Text>
           </View>
-          <View style={{backgroundColor:'rgba(255, 255, 255, 0.1)',
-          paddingVertical:10,
-          paddingHorizontal:24,
-          borderRadius:20,
-          justifyContent:'center',alignItems:'center',
-          marginRight:16
-          }}>
-            <Image style={{width:52,height:52}} source={require('../../assets/weather/heavyrain.png')}/>
-            <Text style={{color:'white',fontSize:18,fontWeight:'600'}}>
-              13&#176;
-            </Text>
-            <Text style={{color:'white'}}>
-              Monday
-            </Text>
-          </View>
-          <View style={{backgroundColor:'rgba(255, 255, 255, 0.1)',
-          paddingVertical:10,
-          paddingHorizontal:24,
-          borderRadius:20,
-          justifyContent:'center',alignItems:'center',
-          marginRight:16
-          }}>
-            <Image style={{width:52,height:52}} source={require('../../assets/weather/heavyrain.png')}/>
-            <Text style={{color:'white',fontSize:18,fontWeight:'600'}}>
-              13&#176;
-            </Text>
-            <Text style={{color:'white'}}>
-              Monday
-            </Text>
-          </View>
-          <View style={{backgroundColor:'rgba(255, 255, 255, 0.1)',
-          paddingVertical:10,
-          paddingHorizontal:24,
-          borderRadius:20,
-          justifyContent:'center',alignItems:'center',
-          marginRight:16
-          }}>
-            <Image style={{width:52,height:52}} source={require('../../assets/weather/heavyrain.png')}/>
-            <Text style={{color:'white',fontSize:18,fontWeight:'600'}}>
-              13&#176;
-            </Text>
-            <Text style={{color:'white'}}>
-              Monday
-            </Text>
-          </View>
-          
+            )
+          })}
         </ScrollView>
       </View>
     </View>
