@@ -37,6 +37,7 @@ interface Location {
 interface Locations {
   name: string;
 }
+
 const InviteScreen = () => {
   const [search, setSearch] = useState('');
   const [showSearch, setShowSearch] = useState(false);
@@ -132,12 +133,7 @@ const InviteScreen = () => {
     >
       <HeaderComponent title="Weather" />
       <View
-        style={{
-          height: '7%',
-          marginHorizontal: 16,
-          position: 'relative',
-          zIndex: 50,
-        }}
+        style={styles.headerweather}
       >
         <View
           style={[
@@ -235,17 +231,17 @@ const InviteScreen = () => {
         {/* Weather Image */}
 
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          {current?.condition.icon ? (
+          {weatherImages[current?.condition?.text as WeatherCondition] ? (
             <Image
-              style={{ width: 240, height: 240 }}
+              style={styles.iconBig}
               source={
                 weatherImages[current?.condition?.text as WeatherCondition]
               }
             />
           ) : (
             <Image
-              style={{ width: 240, height: 240 }}
-              source={require('../../assets/weather/sun.png')}
+              style={styles.iconBig}
+              source={{uri:'http:'+current?.condition.icon}}
             />
           )}
         </View>
@@ -276,50 +272,35 @@ const InviteScreen = () => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
-              style={{ width: 24, height: 24, marginRight: 6 }}
+              style={styles.iconsmall}
               source={require('../../assets/iconweather/wind.png')}
             />
             <Text
-              style={{
-                color: 'white',
-                textAlign: 'center',
-                fontWeight: '400',
-                fontSize: 18,
-              }}
+              style={styles.textkm}
             >
               {current?.wind_kph}km
             </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
-              style={{ width: 24, height: 24, marginRight: 6 }}
+              style={styles.iconsmall}
               source={require('../../assets/iconweather/drop.png')}
             />
             <Text
-              style={{
-                color: 'white',
-                textAlign: 'center',
-                fontWeight: '400',
-                fontSize: 18,
-              }}
+              style={styles.textkm}
             >
               {current?.humidity}%
             </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
-              style={{ width: 24, height: 24, marginRight: 6 }}
+              style={styles.iconsmall}
               source={require('../../assets/iconweather/sun.png')}
             />
             <Text
-              style={{
-                color: 'white',
-                textAlign: 'center',
-                fontWeight: '400',
-                fontSize: 18,
-              }}
+              style={styles.textkm}
             >
-              6:05 AM
+              {weather?.forecast?.forecastday[0]?.astro?.sunrise}
             </Text>
           </View>
         </View>
@@ -376,7 +357,14 @@ const InviteScreen = () => {
     </ImageBackground>
   );
 };
+
 const styles = StyleSheet.create({
+  headerweather:{
+    height: '7%',
+    marginHorizontal: 16,
+    position: 'relative',
+    zIndex: 50,
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -395,6 +383,21 @@ const styles = StyleSheet.create({
     padding: 12,
     marginHorizontal: 4,
   },
+  iconBig:{
+    width: 240,
+     height: 240
+  },
+  iconsmall:{
+    width: 24,
+    height: 24, 
+    marginRight: 6
+  },
+  textkm:{
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: '400',
+    fontSize: 18,
+  }
 });
 
 export default InviteScreen;
