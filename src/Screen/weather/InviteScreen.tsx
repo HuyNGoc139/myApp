@@ -46,7 +46,8 @@ const InviteScreen = () => {
   const [currentLocation, setCurrentLocation] = useState<Location | null>(null); // lưu vị trí hiện tại
   const [address, setAddress] = useState<string | undefined>('');
   const [weather, setWeather] = useState<any>();
-  const { data,isLoading,error } = useQuery(
+  
+  const { data, isLoading, error } = useQuery(
     ['currentWeather', currentLocation],
     async () => {
       if (!currentLocation) return null;
@@ -64,6 +65,7 @@ const InviteScreen = () => {
       },
     }
   );
+
   useEffect(() => {
     const fetchLocationWeather = async () => {
       const hasPermission = await requestLocationPermission();
@@ -82,7 +84,6 @@ const InviteScreen = () => {
     };
     fetchLocationWeather();
   }, []);
-  
 
   const requestLocationPermission = useCallback(async () => {
     if (Platform.OS === 'android') {
@@ -105,31 +106,32 @@ const InviteScreen = () => {
     return true; // Trên iOS thì luôn trả về true
   }, []);
 
-  
-const handelLocation = useCallback(async (loc: Locations) => {
-  setShowSearch(false);
-  setLocations([]);
-  try {
-    const data = await fetchWeatherForeCast({
-      city: loc.name,
-      day: '7',
-    });
-    setWeather(data);
-  } catch (error) {
-    console.log('err:', error);
-  }
-}, []);
+  const handelLocation = useCallback(async (loc: Locations) => {
+    setShowSearch(false);
+    setLocations([]);
+    try {
+      const data = await fetchWeatherForeCast({
+        city: loc.name,
+        day: '7',
+      });
+      setWeather(data);
+    } catch (error) {
+      console.log('err:', error);
+    }
+  }, []);
 
-const handleSearch = useCallback((val: string) => {
-  if (val.length > 2) {
-    fetchLocation({ cityName: val }).then((data) => {
-      setLocations(data);
-    });
-  }
-}, []);
+  const handleSearch = useCallback((val: string) => {
+    if (val.length > 2) {
+      fetchLocation({ cityName: val }).then((data) => {
+        setLocations(data);
+      });
+    }
+  }, []);
 
-const handleTextDebounce = useCallback(debounce(handleSearch, 800), [handleSearch]);
-  const { current, location } = weather||{};
+  const handleTextDebounce = useCallback(debounce(handleSearch, 800), [
+    handleSearch,
+  ]);
+  const { current, location } = weather || {};
 
   return (
     <ImageBackground
@@ -138,9 +140,7 @@ const handleTextDebounce = useCallback(debounce(handleSearch, 800), [handleSearc
       resizeMode="cover"
     >
       <HeaderComponent title="Weather" />
-      <View
-        style={styles.headerweather}
-      >
+      <View style={styles.headerweather}>
         <View
           style={[
             styles.row,
@@ -210,162 +210,162 @@ const handleTextDebounce = useCallback(debounce(handleSearch, 800), [handleSearc
       </View>
       {/* SearchItem */}
 
-      {!currentLocation||isLoading?<ActivityIndicator size="large" color="#00ff00" /> :<View
-        style={{
-          flex: 1,
-          marginHorizontal: 20,
-          marginBottom: 8,
-          justifyContent: 'space-around',
-        }}
-      >
-        {/* Name */}
-        <Text
+      {!currentLocation || isLoading ? (
+        <ActivityIndicator size="large" color="#00ff00" />
+      ) : (
+        <View
           style={{
-            color: 'white',
-            textAlign: 'center',
-            fontWeight: '700',
-            fontSize: 20,
+            flex: 1,
+            marginHorizontal: 20,
+            marginBottom: 8,
+            justifyContent: 'space-around',
           }}
         >
-          {location?.name ? location.name : 'Ha Noi'}
-          {', '}
-          <Text style={{ fontWeight: '400', fontSize: 18 }}>
-            {location?.country ? location.country : 'Viet Nam'}
-          </Text>
-        </Text>
-
-        {/* Weather Image */}
-
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          {weatherImages[current?.condition?.text as WeatherCondition] ? (
-            <Image
-              style={styles.iconBig}
-              source={
-                weatherImages[current?.condition?.text as WeatherCondition]
-              }
-            />
-          ) : (
-            <Image
-              style={styles.iconBig}
-              source={{uri:'http:'+current?.condition.icon}}
-            />
-          )}
-        </View>
-        {/* Nhiet do */}
-        <View>
+          {/* Name */}
           <Text
             style={{
               color: 'white',
               textAlign: 'center',
               fontWeight: '700',
-              fontSize: 60,
+              fontSize: 20,
             }}
           >
-            {current?.temp_c}&#176;
+            {location?.name ? location.name : 'Ha Noi'}
+            {', '}
+            <Text style={{ fontWeight: '400', fontSize: 18 }}>
+              {location?.country ? location.country : 'Viet Nam'}
+            </Text>
           </Text>
-          <Text
-            style={{
-              color: 'white',
-              textAlign: 'center',
-              fontWeight: '400',
-              fontSize: 24,
-            }}
-          >
-            {current?.condition.text}
-          </Text>
-        </View>
-        {/* other weather */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image
-              style={styles.iconsmall}
-              source={require('../../assets/iconweather/wind.png')}
-            />
-            <Text
-              style={styles.textkm}
-            >
-              {current?.wind_kph}km
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image
-              style={styles.iconsmall}
-              source={require('../../assets/iconweather/drop.png')}
-            />
-            <Text
-              style={styles.textkm}
-            >
-              {current?.humidity}%
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image
-              style={styles.iconsmall}
-              source={require('../../assets/iconweather/sun.png')}
-            />
-            <Text
-              style={styles.textkm}
-            >
-              {weather?.forecast?.forecastday[0]?.astro?.sunrise}
-            </Text>
-          </View>
-        </View>
 
-        {/* weather next day */}
-        <View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Calendar size="24" color="white" />
+          {/* Weather Image */}
+
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            {weatherImages[current?.condition?.text as WeatherCondition] ? (
+              <Image
+                style={styles.iconBig}
+                source={
+                  weatherImages[current?.condition?.text as WeatherCondition]
+                }
+              />
+            ) : (
+              <Image
+                style={styles.iconBig}
+                source={{ uri: 'http:' + current?.condition.icon }}
+              />
+            )}
+          </View>
+          {/* Nhiet do */}
+          <View>
             <Text
-              style={{ color: 'white', textAlign: 'center', marginLeft: 8 }}
+              style={{
+                color: 'white',
+                textAlign: 'center',
+                fontWeight: '700',
+                fontSize: 60,
+              }}
             >
-              Daily forecast
+              {current?.temp_c}&#176;
+            </Text>
+            <Text
+              style={{
+                color: 'white',
+                textAlign: 'center',
+                fontWeight: '400',
+                fontSize: 24,
+              }}
+            >
+              {current?.condition.text}
             </Text>
           </View>
-          <ScrollView
-            horizontal
-            contentContainerStyle={{ paddingHorizontal: 15 }}
-            showsHorizontalScrollIndicator={false}
-            style={{ marginTop: 16 }}
+          {/* other weather */}
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
           >
-            {weather?.forecast?.forecastday.map((item: any, index: any) => {
-              let date = new Date(item.date);
-              let options: Intl.DateTimeFormatOptions = { weekday: 'long' }; // Đặt kiểu chính xác cho options
-              let dayName = date.toLocaleDateString('en-US', options);
-              return (
-                <View
-                  key={index}
-                  style={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    paddingVertical: 10,
-                    paddingHorizontal: 24,
-                    borderRadius: 20,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginRight: 16,
-                  }}
-                >
-                  <Image
-                    style={{ width: 52, height: 52 }}
-                    source={{ uri: 'http:' + item?.day?.condition?.icon }}
-                  />
-                  <Text
-                    style={{ color: 'white', fontSize: 18, fontWeight: '600' }}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image
+                style={styles.iconsmall}
+                source={require('../../assets/iconweather/wind.png')}
+              />
+              <Text style={styles.textkm}>{current?.wind_kph}km</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image
+                style={styles.iconsmall}
+                source={require('../../assets/iconweather/drop.png')}
+              />
+              <Text style={styles.textkm}>{current?.humidity}%</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image
+                style={styles.iconsmall}
+                source={require('../../assets/iconweather/sun.png')}
+              />
+              <Text style={styles.textkm}>
+                {weather?.forecast?.forecastday[0]?.astro?.sunrise}
+              </Text>
+            </View>
+          </View>
+
+          {/* weather next day */}
+          <View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Calendar size="24" color="white" />
+              <Text
+                style={{ color: 'white', textAlign: 'center', marginLeft: 8 }}
+              >
+                Daily forecast
+              </Text>
+            </View>
+            <ScrollView
+              horizontal
+              contentContainerStyle={{ paddingHorizontal: 15 }}
+              showsHorizontalScrollIndicator={false}
+              style={{ marginTop: 16 }}
+            >
+              {weather?.forecast?.forecastday.map((item: any, index: any) => {
+                let date = new Date(item.date);
+                let options: Intl.DateTimeFormatOptions = { weekday: 'long' }; // Đặt kiểu chính xác cho options
+                let dayName = date.toLocaleDateString('en-US', options);
+                return (
+                  <View
+                    key={index}
+                    style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      paddingVertical: 10,
+                      paddingHorizontal: 24,
+                      borderRadius: 20,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginRight: 16,
+                    }}
                   >
-                    {item?.day?.avgtemp_c}&#176;
-                  </Text>
-                  <Text style={{ color: 'white' }}>{dayName}</Text>
-                </View>
-              );
-            })}
-          </ScrollView>
+                    <Image
+                      style={{ width: 52, height: 52 }}
+                      source={{ uri: 'http:' + item?.day?.condition?.icon }}
+                    />
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 18,
+                        fontWeight: '600',
+                      }}
+                    >
+                      {item?.day?.avgtemp_c}&#176;
+                    </Text>
+                    <Text style={{ color: 'white' }}>{dayName}</Text>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
         </View>
-      </View>}
+      )}
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  headerweather:{
+  headerweather: {
     height: '7%',
     marginHorizontal: 16,
     position: 'relative',
@@ -389,21 +389,21 @@ const styles = StyleSheet.create({
     padding: 12,
     marginHorizontal: 4,
   },
-  iconBig:{
+  iconBig: {
     width: 240,
-     height: 240
+    height: 240,
   },
-  iconsmall:{
+  iconsmall: {
     width: 24,
-    height: 24, 
-    marginRight: 6
+    height: 24,
+    marginRight: 6,
   },
-  textkm:{
+  textkm: {
     color: 'white',
     textAlign: 'center',
     fontWeight: '400',
     fontSize: 18,
-  }
+  },
 });
 
 export default InviteScreen;
