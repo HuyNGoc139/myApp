@@ -29,7 +29,8 @@ import { weatherImages } from '../../utils/weatherImage';
 import { WeatherCondition } from '../../utils/weatherImage';
 import Geolocation from 'react-native-geolocation-service';
 import { PermissionsAndroid, Platform } from 'react-native';
-
+import { useQuery } from 'react-query';
+import { ActivityIndicator } from 'react-native-paper';
 interface Location {
   latitude: number;
   longitude: number;
@@ -44,32 +45,44 @@ const InviteScreen = () => {
   const [locations, setLocations] = useState<any[]>([]);
   const [currentLocation, setCurrentLocation] = useState<Location | null>(null); // lưu vị trí hiện tại
   const [address, setAddress] = useState<string | undefined>('');
-  const [weather, setWeather] = useState<any>({});
+  const [weather, setWeather] = useState<any>();
+  const { data,isLoading,error } = useQuery(
+    ['currentWeather', currentLocation],
+    async () => {
+      if (!currentLocation) return null;
+      const data = await fetchCurrentLocation({
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+        day: '7',
+      });
+      return data;
+    },
+    {
+      enabled: !!currentLocation, // Chỉ chạy truy vấn nếu currentLocation có giá trị
+      onSettled: (data) => {
+        setWeather(data);
+      },
+    }
+  );
   useEffect(() => {
     const fetchLocationWeather = async () => {
       const hasPermission = await requestLocationPermission();
       if (!hasPermission) return;
 
       Geolocation.getCurrentPosition(
-        async (position) => {
+        (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentLocation({ latitude, longitude });
-
-          const data = await fetchCurrentLocation({
-            latitude,
-            longitude,
-            day: '7',
-          });
-            setWeather(data);
         },
         (error) => {
+          console.error(error);
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
     };
-
     fetchLocationWeather();
   }, []);
+  
 
   const requestLocationPermission = useCallback(async () => {
     if (Platform.OS === 'android') {
@@ -116,7 +129,7 @@ const handleSearch = useCallback((val: string) => {
 }, []);
 
 const handleTextDebounce = useCallback(debounce(handleSearch, 800), [handleSearch]);
-  const { current, location } = weather || {};
+  const { current, location } = weather||{};
 
   return (
     <ImageBackground
@@ -197,7 +210,7 @@ const handleTextDebounce = useCallback(debounce(handleSearch, 800), [handleSearc
       </View>
       {/* SearchItem */}
 
-      <View
+      {!currentLocation||isLoading?<ActivityIndicator size="large" color="#00ff00" /> :<View
         style={{
           flex: 1,
           marginHorizontal: 20,
@@ -346,7 +359,7 @@ const handleTextDebounce = useCallback(debounce(handleSearch, 800), [handleSearc
             })}
           </ScrollView>
         </View>
-      </View>
+      </View>}
     </ImageBackground>
   );
 };
