@@ -18,19 +18,21 @@ import { useCallback, useEffect, useState } from 'react';
 import { Calendar, Location, SearchNormal } from 'iconsax-react-native';
 import debounce from 'lodash/debounce';
 import axios from 'axios';
+
 import {
   fetchLocation,
   fetchWeatherForeCast,
   fetchCurrentLocation,
 } from '../../api/weather';
-
+// import  createAsyncStoragePersistor from '@tanstack/query-async-storage-persister';
 import { Weather } from '../../model/weather';
 import { weatherImages } from '../../utils/weatherImage';
 import { WeatherCondition } from '../../utils/weatherImage';
 import Geolocation from 'react-native-geolocation-service';
 import { PermissionsAndroid, Platform } from 'react-native';
-import { useQuery } from 'react-query';
+import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ActivityIndicator } from 'react-native-paper';
+
 interface Location {
   latitude: number;
   longitude: number;
@@ -39,32 +41,58 @@ interface Locations {
   name: string;
 }
 
+const queryClient = new QueryClient();
 const InviteScreen = () => {
   const [search, setSearch] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [locations, setLocations] = useState<any[]>([]);
-  const [currentLocation, setCurrentLocation] = useState<Location | null>(null); // lưu vị trí hiện tại
+  const [currentLocation, setCurrentLocation] = useState<Location | null>(
+    null
+    // {"latitude": 21.0303983, "longitude": 105.7824883}
+  ); // lưu vị trí hiện tại
   const [address, setAddress] = useState<string | undefined>('');
   const [weather, setWeather] = useState<any>();
-  
-  const { data, isLoading, error } = useQuery(
-    ['currentWeather', currentLocation],
-    async () => {
-      if (!currentLocation) return null;
-      const data = await fetchCurrentLocation({
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude,
-        day: '7',
-      });
-      return data;
-    },
-    {
-      enabled: !!currentLocation, // Chỉ chạy truy vấn nếu currentLocation có giá trị
-      onSettled: (data) => {
-        setWeather(data);
-      },
+  const [isLoading, setIsLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const callQuery = useCallback(() => {
+    const stogage = queryClient.getQueryData([
+      `currentWeather${currentLocation?.latitude}${currentLocation?.longitude}`,
+      currentLocation,
+    ]);
+    if (stogage) {
+      setWeather(stogage);
+      setIsLoading(false);
+    } else {
+      (async () => {
+        if (!currentLocation) return null;
+        const data = await queryClient.fetchQuery({
+          queryKey: [
+            `currentWeather${currentLocation?.latitude}${currentLocation?.longitude}`,
+            currentLocation,
+          ],
+          queryFn: async () => {
+            if (!currentLocation) return null;
+            console.log(currentLocation);
+            const data2 = await fetchCurrentLocation({
+              latitude: currentLocation.latitude,
+              longitude: currentLocation.longitude,
+              day: '7',
+            });
+            setWeather(data2);
+            setIsLoading(false);
+            queryClient.setQueryData(
+              [
+                `currentWeather${currentLocation?.latitude}${currentLocation?.longitude}`,
+                currentLocation,
+              ],
+              data
+            );
+            return data2;
+          },
+        });
+      })();
     }
-  );
+  }, [currentLocation]);
 
   useEffect(() => {
     const fetchLocationWeather = async () => {
@@ -84,6 +112,11 @@ const InviteScreen = () => {
     };
     fetchLocationWeather();
   }, []);
+  useEffect(() => {
+    if (currentLocation) {
+      callQuery();
+    }
+  }, [currentLocation]);
 
   const requestLocationPermission = useCallback(async () => {
     if (Platform.OS === 'android') {
@@ -210,7 +243,7 @@ const InviteScreen = () => {
       </View>
       {/* SearchItem */}
 
-      {!currentLocation || isLoading ? (
+      {!currentLocation || isLoading || !weather ? (
         <ActivityIndicator size="large" color="#00ff00" />
       ) : (
         <View
