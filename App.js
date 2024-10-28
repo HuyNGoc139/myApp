@@ -10,6 +10,8 @@ import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
+import RNBootSplash from "react-native-bootsplash";
+import BootSplash from "react-native-bootsplash";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -23,6 +25,16 @@ const asyncStoragePersister = createAsyncStoragePersister({
 });
 
 export default function App() {
+  useEffect(() => {
+    const init = async () => {
+      // …do multiple sync or async tasks
+    };
+
+    init().finally(async () => {
+      await BootSplash.hide({ fade: true });
+      console.log("BootSplash has been hidden successfully");
+    });
+  }, []);
   return (
     <Provider store={store}>
       <PersistQueryClientProvider
