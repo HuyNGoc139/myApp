@@ -47,7 +47,7 @@ import { AppState } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { updateUserStatus } from '../utils/updateUserStatus';
 import { HandelNotifications } from '../utils/HandleSendNoti';
-
+import BootSplash from "react-native-bootsplash";
 const Drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
@@ -446,6 +446,15 @@ const Router: React.FC = () => {
     return () => {
       subscription.remove();
     };
+  }, []);
+  useEffect(() => {
+    const init = async () => {
+      // …do multiple sync or async tasks
+    };
+
+    init().finally(async () => {
+      await BootSplash.hide({ fade: true });
+    });
   }, []);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

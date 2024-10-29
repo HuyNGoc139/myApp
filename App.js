@@ -25,16 +25,6 @@ const asyncStoragePersister = createAsyncStoragePersister({
 });
 
 export default function App() {
-  useEffect(() => {
-    const init = async () => {
-      // …do multiple sync or async tasks
-    };
-
-    init().finally(async () => {
-      await BootSplash.hide({ fade: true });
-      console.log("BootSplash has been hidden successfully");
-    });
-  }, []);
   return (
     <Provider store={store}>
       <PersistQueryClientProvider
