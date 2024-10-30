@@ -7,25 +7,17 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  Alert,
 } from 'react-native';
 import HeaderComponent from '../../components/common/HeaderComponent';
-import DrawerSceneWrapper from '../../components/common/DrawerSceneWrapper';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import InputComponent from '../../components/common/InputComponent';
 import { useCallback, useEffect, useState } from 'react';
 import { Calendar, Location, SearchNormal } from 'iconsax-react-native';
 import debounce from 'lodash/debounce';
-import axios from 'axios';
 
 import {
   fetchLocation,
   fetchWeatherForeCast,
   fetchCurrentLocation,
 } from '../../api/weather';
-// import  createAsyncStoragePersistor from '@tanstack/query-async-storage-persister';
-import { Weather } from '../../model/weather';
 import { weatherImages } from '../../utils/weatherImage';
 import { WeatherCondition } from '../../utils/weatherImage';
 import Geolocation from 'react-native-geolocation-service';
@@ -50,7 +42,6 @@ const InviteScreen = () => {
     null
     // {"latitude": 21.0303983, "longitude": 105.7824883}
   ); // lưu vị trí hiện tại
-  const [address, setAddress] = useState<string | undefined>('');
   const [weather, setWeather] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const queryClient = useQueryClient();

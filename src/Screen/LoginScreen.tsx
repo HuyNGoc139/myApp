@@ -1,32 +1,30 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useCallback, useEffect } from 'react';
 import {
-  View,
-  Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
-  Image,
   ScrollView,
   ImageBackground,
   Alert,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Button,
+  Colors,
+} from 'react-native-ui-lib';
 import { validateEmail, validatePassword } from '../utils/validate';
 import SpaceComponent from '../components/common/SpaceComponent';
 import InputComponent from '../components/common/InputComponent';
 import ButtonComponent from '../components/common/ButtonComponent';
 import { loginUser, loginggUser } from '../redux/authActions';
 import { AppDispatch, RootState } from '../redux/store';
-import Cog from '../assets/icon/cogs.svg';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import i18next from '../locales/i18n';
 import { changeLanguage } from '../redux/reducers/languageSlice';
-import { updateUserStatus } from '../utils/updateUserStatus';
 
 const LoginScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
@@ -38,6 +36,7 @@ const LoginScreen = ({ navigation }: any) => {
   const currentLanguage = useSelector(
     (state: RootState) => state.language.language
   );
+  const themeColor = useSelector((state: RootState) => state.theme.color);
   const toggleLanguage = () => {
     const newLanguage = currentLanguage === 'en' ? 'vi' : 'en';
     dispatch(changeLanguage(newLanguage));
@@ -59,10 +58,6 @@ const LoginScreen = ({ navigation }: any) => {
     }
   }
 
-  // const autoLogin = async () => {
-  //   dispatch(loginggUserAuto());
-  // };
-
   const handleLetRegister = () => {
     navigation.navigate('Register');
   };
@@ -80,7 +75,6 @@ const LoginScreen = ({ navigation }: any) => {
     }
   }, [username, password, dispatch, error]);
 
-  // Reset error khi người dùng nhập lại
   useEffect(() => {
     if (error) {
       setUsername('');
@@ -93,79 +87,84 @@ const LoginScreen = ({ navigation }: any) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View flex>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <ImageBackground
           source={require('../assets/bg.png')}
           style={styles.container}
           resizeMode="cover"
         >
-          <View style={styles.header}>
-            <Image source={require('../assets/logo.png')} style={styles.logo} />
-            <View style={{ marginLeft: 20 }}>
-              <Text style={styles.upnow}>UpNow</Text>
-              <Text style={styles.text}>Digital Hypnotherapy</Text>
+          <View flex style={{ backgroundColor: themeColor }}>
+            <View style={styles.header}>
+              <Image
+                source={require('../assets/logo.png')}
+                style={styles.logo}
+              />
+              <View marginL-20>
+                <Text style={styles.upnow}>UpNow</Text>
+                <Text style={styles.text}>Digital Hypnotherapy</Text>
+              </View>
             </View>
-          </View>
-          <SpaceComponent height={5} color="rgba(255, 255, 255, 0.1)" />
-          <View style={styles.formContainer}>
-            <Text style={[styles.upnow, { marginLeft: 14, marginBottom: 20 }]}>
-              Log In
-            </Text>
-            <InputComponent
-              placeholder="Email"
-              value={username}
-              onChangeText={setUsername}
-              iconSource={require('../assets/ic_mail.png')}
-            />
-            <InputComponent
-              inputpassword
-              placeholder={t('password')}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              iconSource={require('../assets/Vector.png')}
-            />
+            <SpaceComponent height={5} color="rgba(255, 255, 255, 0.1)" />
+            <View style={styles.formContainer}>
+              <Text marginL-14 marginB-20 style={styles.upnow}>
+                Log In
+              </Text>
+              <InputComponent
+                placeholder="Email"
+                value={username}
+                onChangeText={setUsername}
+                iconSource={require('../assets/ic_mail.png')}
+              />
+              <InputComponent
+                inputpassword
+                placeholder={t('password')}
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                iconSource={require('../assets/Vector.png')}
+              />
 
-            <TouchableOpacity>
-              <Text style={styles.forgotPasswordText}>{t('forgetpass')}</Text>
-            </TouchableOpacity>
-
-            <ButtonComponent
-              title={t('Login')}
-              colors={['#FF5789', '#FF9B9C']}
-              onPress={handleLogin}
-            />
-            <View style={styles.signupContainer}>
-              <Text style={styles.signupText}>{t('dontaccount')}</Text>
-              <TouchableOpacity onPress={handleLetRegister}>
-                <Text style={styles.signupLink}>{t('signup')}</Text>
+              <TouchableOpacity>
+                <Text style={styles.forgotPasswordText}>{t('forgetpass')}</Text>
               </TouchableOpacity>
+
+              <ButtonComponent
+                title={t('Login')}
+                colors={['#FF5789', '#FF9B9C']}
+                onPress={handleLogin}
+              />
+              <View style={styles.signupContainer}>
+                <Text style={styles.signupText}>{t('dontaccount')}</Text>
+                <TouchableOpacity onPress={handleLetRegister}>
+                  <Text style={styles.signupLink}>{t('signup')}</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.orTextContainer}>
+                <View style={styles.line}></View>
+                <Text style={styles.orText}>{t('orlogin')}</Text>
+                <View style={styles.line}></View>
+              </View>
+
+              <ButtonComponent
+                title={t('fb')}
+                backgroundColor="#rgba(63, 96, 178, 1)"
+                source={require('../assets/fb.png')}
+              />
+
+              <ButtonComponent
+                title={t('gg')}
+                backgroundColor="#000"
+                source={require('../assets/Vector1.png')}
+                onPress={onGoogleButtonPress}
+              />
+              <ButtonComponent
+                title={t('changLng')}
+                backgroundColor="#888"
+                onPress={toggleLanguage}
+              />
             </View>
-
-            <View style={styles.orTextContainer}>
-              <View style={styles.line}></View>
-              <Text style={styles.orText}>{t('orlogin')}</Text>
-              <View style={styles.line}></View>
-            </View>
-
-            <ButtonComponent
-              title={t('fb')}
-              backgroundColor="#rgba(63, 96, 178, 1)"
-              source={require('../assets/fb.png')}
-            />
-
-            <ButtonComponent
-              title={t('gg')}
-              backgroundColor="#000"
-              source={require('../assets/Vector1.png')}
-              onPress={onGoogleButtonPress}
-            />
-            <ButtonComponent
-              title={t('changLng')}
-              backgroundColor="#888"
-              onPress={toggleLanguage}
-            />
           </View>
         </ImageBackground>
       </ScrollView>

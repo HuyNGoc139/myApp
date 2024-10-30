@@ -1,28 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import {
-  View,
-  Text,
-  Button,
-  TouchableOpacity,
-  Image,
-  StatusBar,
-  TextInput,
-  Alert,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
 import {
   ArrowSquareLeft,
-  Back,
   Call,
-  Camera,
   MessageRemove,
   Send2,
   Video,
-  VideoAdd,
 } from 'iconsax-react-native';
 
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import SpaceComponent from '../../components/common/SpaceComponent';
 import MessageList from '../../components/chat/MessageList';
 import { useSelector } from 'react-redux';

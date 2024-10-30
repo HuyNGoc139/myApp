@@ -42,7 +42,7 @@ const DrawerSceneWrapper = ({ children }: any) => {
       style={[
         styles.animatedContainer,
         animatedStyle,
-        { flexDirection: 'row', alignItems: 'center' },
+        { flexDirection: 'row' },
       ]}
     >
       {drawerStatus == 'open' ? (

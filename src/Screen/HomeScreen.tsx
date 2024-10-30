@@ -1,38 +1,36 @@
 import React, { useState, useCallback } from 'react';
+import { StyleSheet } from 'react-native';
 import {
   View,
   Text,
-  Button,
-  ImageBackground,
   Image,
-  StyleSheet,
   TouchableOpacity,
-} from 'react-native';
+  Colors,
+  Button,
+  ColorPicker,
+} from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/authActions';
 import DrawerSceneWrapper from '../components/common/DrawerSceneWrapper';
 import { useDrawerStatus } from '@react-navigation/drawer';
 import { AppDispatch, RootState } from '../redux/store';
 import { resetTodos } from '../redux/reducers/todoReducer';
-import Cog from '../assets/icon/cogs.svg';
-import Home from '../assets/icon/home.svg';
-import Ban from '../assets/icon/ban.svg';
-import Bell from '../assets/icon/bell.svg';
-import Help from '../assets/icon/help.svg';
-import Mail from '../assets/icon/mail.svg';
-import User from '../assets/icon/user.svg';
-import Video from '../assets/icon/video.svg';
-import Trophy from '../assets/icon/trophy.svg';
 import { useTranslation } from 'react-i18next';
 import { updateUserStatus } from '../utils/updateUserStatus';
+import { setColor } from '../redux/reducers/themeSlice';
 
 const HomeScreen = ({ navigation }: any) => {
-  const user = useSelector((state: RootState) => state.auth.user);
-  const isLogin = useSelector((state: RootState) => state.auth.isAuthenticated);
   const dispatch = useDispatch<AppDispatch>();
   const [isOpen, setIsOpen] = useState(false);
   const drawerStatus = useDrawerStatus();
   const { t } = useTranslation();
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const themeColor = useSelector((state: RootState) => state.theme.color);
+
+  const handleColorChange = (color: string) => {
+    dispatch(setColor(color));
+  };
+
   const handleLogout = useCallback(async () => {
     await updateUserStatus('offline');
     dispatch(logoutUser());
@@ -50,21 +48,9 @@ const HomeScreen = ({ navigation }: any) => {
   }, [navigation]);
 
   return (
-    <ImageBackground
-      source={require('../assets/bg.png')}
-      style={{ flex: 1 }}
-      resizeMode="cover"
-    >
-      {/* Header */}
-      {drawerStatus == 'open' && (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            zIndex: 10,
-          }}
-        >
+    <View flex style={{ backgroundColor: themeColor }}>
+      {drawerStatus === 'open' && (
+        <View row spread style={{ zIndex: 10 }}>
           <TouchableOpacity onPress={closeDrawer}>
             <Image
               style={styles.image}
@@ -80,60 +66,69 @@ const HomeScreen = ({ navigation }: any) => {
         </View>
       )}
       <DrawerSceneWrapper>
-        {/* View chứa ImageBackground để thêm border */}
         <View
           style={[
             styles.backgroundContainer,
-            { borderRadius: drawerStatus == 'open' ? 20 : 0 },
+            { borderRadius: drawerStatus === 'open' ? 20 : 0 },
           ]}
         >
-          <ImageBackground
-            style={styles.imageBackground}
-            source={{
-              uri: 'https://s3-alpha-sig.figma.com/img/4b67/6a2d/4edf7f5da5d0388a0e118a254c21a8ef?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=LZ6zid6DBrlmYEmzE0pemy83D3oYGvsetnxoMLD9IuaXBjUF6vrrh-O18o-1n9DQjGF-DHGirHnrQ7npfB-oGTWTdu3F5U0w7Y3jWSARy9eedIprGIoj9575dgtikh9IktZ3G7MtC6CbMtnTG5oG6kEo~Oj~DIksIUMB09dw0pwm~EiDgvzshav6NLhT~45-SC-RJ1SVkHw~sIa6fOBG8NAGHZblixePPQiZOWvbb8ii4QqSsBkAF2VLXkwoyAuGoT2WcAM7W9MMAfZfHeRqedBIxB-S1IZpoqiK31xiUAwxfp39uKn4kqhNZHCoN9qUeUhNnNx-Z9DTTd8PZbLzhw__',
-            }}
-          >
-            <TouchableOpacity onPress={openDrawer}>
-              <Image
-                style={styles.image}
-                source={require('../assets/MaskGroup.png')}
+          <TouchableOpacity onPress={openDrawer}>
+            <Image
+              style={styles.image}
+              source={require('../assets/MaskGroup.png')}
+            />
+          </TouchableOpacity>
+          <View center>
+            <Text black text40>
+              {t('welcome')}
+            </Text>
+            <Button
+              label="Chọn màu nền"
+              onPress={() => setShowColorPicker(!showColorPicker)}
+              backgroundColor={Colors.blue30}
+              marginB-12
+            />
+
+            {showColorPicker && (
+              <ColorPicker
+                initialColor={themeColor}
+                onValueChange={(color: any) => handleColorChange(color)}
+                onSubmit={(color: any) => handleColorChange(color)}
+                colors={[
+                  Colors.red30,
+                  Colors.blue30,
+                  Colors.green30,
+                  Colors.yellow30,
+                  '#FF5789',
+                ]}
+                backgroundColor="#E4E2E2"
               />
-            </TouchableOpacity>
-            <View style={{ alignItems: 'center', flex: 1 }}>
-              <Text style={{ fontSize: 20, color: 'white' }}>
-                {t('welcome')}
-              </Text>
-              <Button title={t('logout')} onPress={handleLogout} />
-            </View>
-          </ImageBackground>
+            )}
+            <Button
+              marginT-12
+              label={t('logout')}
+              onPress={handleLogout}
+              backgroundColor={Colors.blue30}
+            />
+          </View>
         </View>
       </DrawerSceneWrapper>
-      {/* Footer */}
-      {drawerStatus == 'open' && (
-        <View
-          style={{ marginBottom: 20, marginLeft: 20, flexDirection: 'row' }}
-        >
-          <Text style={{ color: 'rgba(255, 255, 255, 1)' }}>Powered by </Text>
-          <Text style={{ color: 'rgba(255, 255, 255, 1)', fontWeight: '700' }}>
-            UpNow{' '}
+      {drawerStatus === 'open' && (
+        <View marginL-20 marginB-20 row>
+          <Text white>Powered by </Text>
+          <Text white bold>
+            UpNow
           </Text>
         </View>
       )}
-    </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   backgroundContainer: {
-    flex: 1,
-    // borderWidth: 2, // Thêm viền
-    borderColor: 'white', // Màu viền
-    // Độ bo góc
-    overflow: 'hidden', // Ẩn phần góc bo thừa của ảnh nền
-  },
-  imageBackground: {
-    flex: 1,
-    borderRadius: 20, // Độ bo góc của ảnh nền để khớp với container
+    borderColor: 'white',
+    overflow: 'hidden',
   },
   image: {
     margin: 26,

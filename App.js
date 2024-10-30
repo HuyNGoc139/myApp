@@ -4,14 +4,11 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import Router from './src/router/Router';
 import store, { persistor } from './src/redux/store';
-import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { persistQueryClient } from '@tanstack/react-query-persist-client';
-import RNBootSplash from "react-native-bootsplash";
-import BootSplash from "react-native-bootsplash";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

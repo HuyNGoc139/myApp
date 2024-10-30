@@ -42,12 +42,9 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import RoomScreen from '../screen/chatScreen/RoomScreen';
 import RoomGroupScreen from '../screen/chatScreen/RoomGroup';
-import auth from '@react-native-firebase/auth';
 import { AppState } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
 import { updateUserStatus } from '../utils/updateUserStatus';
-import { HandelNotifications } from '../utils/HandleSendNoti';
-import BootSplash from "react-native-bootsplash";
+import BootSplash from 'react-native-bootsplash';
 const Drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator();
@@ -57,18 +54,7 @@ interface DrawerImageProps {
   source: any;
 }
 
-// Đăng ký sự kiện khi ứng dụng chuyển trạng thái
-// AppState.addEventListener('change', (nextAppState) => {
-//   if (nextAppState === 'active') {
-//     updateUserStatus('online');
-//   } else {
-//     updateUserStatus('offline');
-//   }
-// });
-
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
-  // const userName = useSelector((state: RootState) => state.auth.user?.json?.username);
-
   return (
     <>
       <View style={{ marginLeft: 45, marginTop: 50 }}>
@@ -448,14 +434,13 @@ const Router: React.FC = () => {
     };
   }, []);
   useEffect(() => {
-    const init = async () => {
-      // …do multiple sync or async tasks
-    };
+    const init = async () => {};
 
     init().finally(async () => {
       await BootSplash.hide({ fade: true });
     });
   }, []);
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {isLogin ? (
