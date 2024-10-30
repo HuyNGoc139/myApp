@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
+  StyleSheet,
+  ImageBackground,
+} from 'react-native';
+import {
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
   Image,
-} from 'react-native';
+  TouchableOpacity,
+  Colors,
+  Button,
+  ColorPicker,
+} from 'react-native-ui-lib';
 import { Calendar, DateData } from 'react-native-calendars';
 import HeaderComponent from '../components/common/HeaderComponent';
 import moment from 'moment';

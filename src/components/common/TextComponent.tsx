@@ -1,8 +1,16 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {StyleSheet, } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SpaceComponent from './SpaceComponent';
-
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Colors,
+  Button,
+  ColorPicker,
+} from 'react-native-ui-lib';
 interface Props {
   title: string;
   isNext?: boolean;

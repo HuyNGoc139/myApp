@@ -1,12 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  View,
-  Text,
   ImageBackground,
   FlatList,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
   Modal,
 } from 'react-native';
 import HeaderComponent from '../components/common/HeaderComponent';
@@ -25,7 +22,15 @@ import { getTodosFromStorage, saveTodosToStorage } from '../utils/todoStorage';
 import { AppDispatch, RootState } from '../redux/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalAddTodo from '../components/common/modalADd';
-
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Colors,
+  Button,
+  ColorPicker,
+} from 'react-native-ui-lib';
 interface Todo {
   id: number;
   title: string;
@@ -62,14 +67,12 @@ const ReminderScreen: React.FC<ReminderScreenProps> = ({ navigation }) => {
     >
       <HeaderComponent title="TodoList" />
       {/* search */}
-      <View style={{ marginLeft: 20, marginRight: 20, alignItems: 'center' }}>
+      <View marginL-20 marginR-20 style={{alignItems: 'center' }}>
         <View
+        row paddingL-10 paddingR-10
           style={[
             styles.inputContainer,
             {
-              flexDirection: 'row',
-              paddingLeft: 10,
-              paddingRight: 10,
               alignItems: 'center',
             },
           ]}
@@ -110,7 +113,7 @@ const ReminderScreen: React.FC<ReminderScreenProps> = ({ navigation }) => {
           <Text style={styles.checkboxLabel}>To do</Text>
         </View>
       </View>
-      <View style={{ flex: 1, margin: 20 }}>
+      <View flex margin-20>
         <FlatList
           data={filteredTodos} // Dùng dữ liệu đã lọc
           keyExtractor={(item) => item.id.toString()}
@@ -118,7 +121,7 @@ const ReminderScreen: React.FC<ReminderScreenProps> = ({ navigation }) => {
           ListEmptyComponent={<Text>No Todos Available</Text>}
         />
       </View>
-      <View style={{ margin: 20 }}>
+      <View margin-20>
         <ButtonComponent
           title="Add"
           colors={['#FF5789', '#FF9B9C']}

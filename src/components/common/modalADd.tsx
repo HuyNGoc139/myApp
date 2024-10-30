@@ -1,13 +1,19 @@
 // ModalAddTodo.tsx
 import React, { useState, useCallback } from 'react';
 import {
-  View,
-  Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
   Modal,
 } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Colors,
+  Button,
+  ColorPicker,
+} from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
 import { addTodo } from '../../redux/reducers/todoReducer';
 import {

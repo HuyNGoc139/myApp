@@ -1,10 +1,11 @@
 import {
-  View,
-  Text,
-  TouchableOpacity,
   StyleProp,
   ViewStyle,
 } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+} from 'react-native-ui-lib';
 import React, { ReactNode } from 'react';
 import { globalStyles } from '../../styles/globalStyles';
 

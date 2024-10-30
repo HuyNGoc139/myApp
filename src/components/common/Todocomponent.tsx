@@ -1,6 +1,11 @@
 import CheckBox from '@react-native-community/checkbox';
 import React, { useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import {StyleSheet,Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addTodo,

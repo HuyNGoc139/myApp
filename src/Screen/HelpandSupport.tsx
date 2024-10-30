@@ -1,4 +1,8 @@
-import { View, Text, ImageBackground } from 'react-native';
+import {ImageBackground } from 'react-native';
+import {
+  View,
+  Text,
+} from 'react-native-ui-lib';
 import HeaderComponent from '../components/common/HeaderComponent';
 import DrawerSceneWrapper from '../components/common/DrawerSceneWrapper';
 

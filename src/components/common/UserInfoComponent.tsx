@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-
+import {TextInput, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+} from 'react-native-ui-lib';
 interface UserInfoInputProps {
   label: string;
   value: string;

@@ -1,8 +1,16 @@
 // src/Components/CustomButton.tsx
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, Image, View } from 'react-native';
+import {StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Colors,
+  Button,
+  ColorPicker,
+} from 'react-native-ui-lib';
 interface Props {
   onPress?: () => void;
   title: string;

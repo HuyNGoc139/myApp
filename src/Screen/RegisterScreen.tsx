@@ -1,16 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useCallback } from 'react';
 import {
-  View,
-  Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
-  Image,
   ScrollView,
   ImageBackground,
   Alert,
 } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Colors,
+  Button,
+  ColorPicker,
+} from 'react-native-ui-lib';
 import { validateEmail, validatePassword } from '../utils/validate';
 import SpaceComponent from '../components/common/SpaceComponent';
 import InputComponent from '../components/common/InputComponent';
@@ -52,7 +57,7 @@ const RegisterScreen = ({ navigation }: any) => {
   }, [firstName, lastName, email, password, isChecked, error]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View flex>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <ImageBackground
           source={require('../assets/bg.png')}
@@ -68,7 +73,7 @@ const RegisterScreen = ({ navigation }: any) => {
           </View>
           <SpaceComponent height={5} color="rgba(255, 255, 255, 0.1)" />
           <View style={styles.formContainer}>
-            <Text style={[styles.upnow, { marginLeft: 14, marginBottom: 20 }]}>
+            <Text marginL-14 marginB-20 style={[styles.upnow]}>
               Register
             </Text>
             <InputComponent

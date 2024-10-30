@@ -1,6 +1,14 @@
 import React from 'react';
-import { View, TextInput, Image, StyleSheet } from 'react-native';
-
+import {TextInput, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Colors,
+  Button,
+  ColorPicker,
+} from 'react-native-ui-lib';
 interface Props {
   placeholder: string;
   value: string;

@@ -1,5 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
+import {TextInput } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Colors,
+  Button,
+  ColorPicker,
+} from 'react-native-ui-lib';
 import {
   ArrowSquareLeft,
   Call,
@@ -73,7 +82,7 @@ const RoomGroupScreen = ({ navigation, route }: any) => {
   }, [group.id]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View flex style={{backgroundColor: 'white' }}>
       <View
         style={{
           backgroundColor: 'white',

@@ -1,6 +1,14 @@
 import { useMemo } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-
+import {StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Colors,
+  Button,
+  ColorPicker,
+} from 'react-native-ui-lib';
 interface Props {
   status?: string;
   title: string;
